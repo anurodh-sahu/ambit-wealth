@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { validateLogin, ValidationErrors } from "@/features/auth/validation";
 import { useLogin } from "@/features/auth/hooks/useLogin";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 export default function LoginForm() {
   const { loading, handleLogin } = useLogin();
@@ -46,8 +46,7 @@ export default function LoginForm() {
 
       <Button
         disabled={loading}
-        variant="primary"
-        fullWidth={true}
+        className="w-full"
         //className="w-full rounded-lg bg-primary py-3 text-white disabled:opacity-50"
       >
         {loading ? "Signing in..." : "Login"}
