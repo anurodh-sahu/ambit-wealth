@@ -31,7 +31,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="space-y-[10px]">
+    <div className="space-y-[10px] w-full max-w-[320px]">
       <header className="space-y-1">
         <h1 className="text-2xl font-light">Login to your account</h1>
         <p className="text-sm font-regular">
