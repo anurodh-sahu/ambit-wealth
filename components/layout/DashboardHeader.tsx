@@ -7,7 +7,7 @@ export default function DashboardHeader() {
   const { handleLogout } = useLogout();
 
   return (
-    <header className="flex h-16 items-center justify-between border-b px-6 w-full">
+    <header className="flex h-16 items-center justify-between border-b px-6 w-full sticky top-0 z-10">
       <h1 className="text-lg font-semibold">My App</h1>
 
       <nav className="flex items-center gap-6">

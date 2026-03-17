@@ -7,9 +7,11 @@ export interface User {
   id: number;
   name: string;
   role: string;
+  inceptionDate: string;
 }
 
 export interface LoginResponse {
+  isAuthenticated: boolean;
   user: User;
   accessToken: string;
   refreshToken: string;

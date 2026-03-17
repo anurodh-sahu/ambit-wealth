@@ -43,7 +43,7 @@ export interface LineTouchChartProps {
 
 export interface LineStackChartProps {
   labels: string[];
-  series: SeriesOption;
+  series: SeriesOption[];
   height?: number | string;
 }
 

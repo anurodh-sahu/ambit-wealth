@@ -6,11 +6,11 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen flex-col overflow-hidden">
+    <div className="flex min-h-screen flex-col">
       <DashboardHeader />
-      <main className="flex-1 w-full bg-surface overflow-y-auto">
-        {children}
-      </main>
+
+      <main className="flex-1 bg-surface">{children}</main>
+
       <DashboardFooter />
     </div>
   );
