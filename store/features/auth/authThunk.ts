@@ -22,10 +22,12 @@ export const loginUser = createAsyncThunk<
         resolve({
           accessToken: "1234567890",
           refreshToken: "1234567890",
+          isAuthenticated: true,
           user: {
             id: 1,
             name: "John Doe",
             role: "admin",
+            inceptionDate: "28-MAR '16",
           },
         });
       }, 1000);

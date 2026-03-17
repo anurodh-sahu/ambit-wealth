@@ -23,7 +23,7 @@ export const useAuth = () => {
   const signOut = () => {
     dispatch(logoutUser());
   };
-
+  console.log("isAuthenticated", isAuthenticated);
   return {
     user,
     loading,
