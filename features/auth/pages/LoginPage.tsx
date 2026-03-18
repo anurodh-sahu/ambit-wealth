@@ -106,12 +106,7 @@ export default function LoginPage() {
             )}
           >
             <div className="flex flex-col md:flex-row gap-5 h-full md:h-auto justify-between items-end md:items-center md:justify-center align-center md:align-center">
-              <p
-                className="text-xs font-normal "
-                style={{ letterSpacing: "0.2em", wordSpacing: "0.2em" }}
-              >
-                {renderQuote(quotes[1])}
-              </p>
+              {renderQuote(quotes[1])}
               <div
                 className={cn(
                   "flex gap-2 items-center align-middle justify-end",

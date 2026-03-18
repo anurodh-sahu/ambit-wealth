@@ -1,0 +1,12 @@
+/* Import Jost font from Google Fonts for Storybook */
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* Apply Jost font to all Storybook components */
+body {
+  --font-jost: 'Jost', 'Jost Fallback', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-jost);
+}
+
+* {
+  font-family: inherit;
+}
