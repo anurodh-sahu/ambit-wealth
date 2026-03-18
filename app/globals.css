@@ -19,6 +19,8 @@
   --primary: #e7000b;
   --primary-foreground: #f8fafc;
 
+  --primary-p: #E30613;
+
   --secondary: #f1f5f9;
   --secondary-foreground: #0f172b;
 
@@ -82,6 +84,7 @@
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-p: var(--primary-p);
 
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);

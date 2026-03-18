@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { validateLogin, ValidationErrors } from "@/features/auth/validation";
 import { useLogin } from "@/features/auth/hooks/useLogin";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import InputWrapper from "./InputWrapper";
 import ForgotLink from "./ForgotLink";
 import LoginLabel from "./LoginLabel";
