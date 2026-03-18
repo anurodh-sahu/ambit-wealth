@@ -1,6 +1,6 @@
 import { CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { DateRangePicker } from "@/components/ui/date-range-picker";
+import { DateRangePicker } from "@/components/shared/DateRangePicker";
 import { useHome } from "../hooks/useHome";
 export default function Main() {
   const { loading, data, error } = useHome();

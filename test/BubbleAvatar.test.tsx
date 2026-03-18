@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { BubbleAvatar } from "@/components/ui/bubble-avatar";
+import { BubbleAvatar } from "@/components/shared/BubbleAvatar";
 
 describe("BubbleAvatar Component - BDD Tests", () => {
   describe("Initials Generation", () => {
@@ -74,7 +74,9 @@ describe("BubbleAvatar Component - BDD Tests", () => {
     describe("Given different size props", () => {
       it("When size is 'sm', Then it should have small size classes", () => {
         // Given & When
-        const { container } = render(<BubbleAvatar name="John Doe" size="sm" />);
+        const { container } = render(
+          <BubbleAvatar name="John Doe" size="sm" />
+        );
         const avatar = container.firstChild;
 
         // Then
@@ -83,7 +85,9 @@ describe("BubbleAvatar Component - BDD Tests", () => {
 
       it("When size is 'md', Then it should have medium size classes", () => {
         // Given & When
-        const { container } = render(<BubbleAvatar name="John Doe" size="md" />);
+        const { container } = render(
+          <BubbleAvatar name="John Doe" size="md" />
+        );
         const avatar = container.firstChild;
 
         // Then
@@ -92,7 +96,9 @@ describe("BubbleAvatar Component - BDD Tests", () => {
 
       it("When size is 'lg', Then it should have large size classes", () => {
         // Given & When
-        const { container } = render(<BubbleAvatar name="John Doe" size="lg" />);
+        const { container } = render(
+          <BubbleAvatar name="John Doe" size="lg" />
+        );
         const avatar = container.firstChild;
 
         // Then
@@ -101,7 +107,9 @@ describe("BubbleAvatar Component - BDD Tests", () => {
 
       it("When size is 'xl', Then it should have extra large size classes", () => {
         // Given & When
-        const { container } = render(<BubbleAvatar name="John Doe" size="xl" />);
+        const { container } = render(
+          <BubbleAvatar name="John Doe" size="xl" />
+        );
         const avatar = container.firstChild;
 
         // Then

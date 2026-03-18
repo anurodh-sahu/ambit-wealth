@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { BubbleAvatar } from "@/components/ui/bubble-avatar";
+import { BubbleAvatar } from "@/components/shared/BubbleAvatar";
 
 const meta = {
   title: "Components/UI/BubbleAvatar",
