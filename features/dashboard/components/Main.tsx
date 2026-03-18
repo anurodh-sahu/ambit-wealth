@@ -1,4 +1,6 @@
-import { Button } from "@/components/ui/Button";
+import { CalendarIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { useHome } from "../hooks/useHome";
 export default function Main() {
   const { loading, data, error } = useHome();
@@ -6,11 +8,28 @@ export default function Main() {
   if (error)
     return (
       <div>
-        Error: {error} <Button variant={"outline"}>Click me</Button>{" "}
-        <Button variant={"outline"} disabled={true}>
+        Error: {error}{" "}
+        <div className="mt-4">
+          <DateRangePicker mode="modal" />
+        </div>
+        <Button size={"sm"} shape={"pill"}>
+          Click me
+        </Button>{" "}
+        <DateRangePicker inceptionDate={new Date(2020, 0, 1)} />
+        <Button size={"sm"} shape={"pill"} variant={"outline"}>
           Click me
         </Button>
-        <Button variant={"link"}>Click me</Button>
+        <Button
+          variant={"image"}
+          shape={"pill"}
+          icon={<CalendarIcon />}
+          bgImage="/tree.png"
+        >
+          Click me
+        </Button>
+        <Button variant={"link"} icon={<CalendarIcon />}>
+          Click me
+        </Button>
         <Button variant={"link"} disabled={true}>
           Click me
         </Button>
