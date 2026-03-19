@@ -20,7 +20,7 @@ export default function DashboardHeader() {
   };
 
   return (
-    <header className="flex h-16 items-center justify-between border-b px-6 w-full sticky top-0 z-10">
+    <header className="flex h-16 items-center justify-between border-b px-6 w-full sticky top-0 z-15 bg-white">
       <nav className="flex flex-col gap-2 w-full">
         <div className="flex items-center justify-between gap-6">
           <div className="flex flex-1 items-center gap-9">
