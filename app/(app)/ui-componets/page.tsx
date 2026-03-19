@@ -1,6 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
+import dynamic from "next/dynamic";
+import { usePortfolioFilters } from "@/features/dashboard/hooks/usePortfolioFilters";
 import AreaStackGradientChart from "@/components/shared/charts/area/AreaStackGradientChat";
 import BarStackNormalizationChart from "@/components/shared/charts/bar/BarStackNormalizationChart";
 import TreemapChart from "@/components/shared/charts/treemap/TreeMapChart";
@@ -11,6 +13,37 @@ import type { TreemapChartRef } from "@/components/shared/charts/types";
 import LineStackChart from "@/components/shared/charts/line/LineStackChart";
 import ExpandableTable from "@/components/shared/table/ExpandableTable";
 import { columns } from "@/components/shared/table/columns";
+import DonutChart, { type DonutSlice } from "@/components/DonutChart";
+import PortfolioTable from "@/components/shared/highcharts/table/portfoliotable";
+import LineChart from "@/components/shared/highcharts/line/LineChart";
+import AreaStackChart from "@/components/shared/highcharts/area/AreaStackChart";
+const PieChart = dynamic(() => import("@/components/shared/highcharts/pie/PieChart"), { ssr: false });
+function Divider() {
+  return (
+    <div
+      style={{ width: 1, background: "#e8e8e8", alignSelf: "stretch", margin: "20px 0" }}
+    />
+  );
+}
+
+const BROWSER_DATA: DonutSlice[] = [
+  { name: "Chrome",          value: 65.1, color: "#4285f4" },
+  { name: "Safari",          value: 18.9, color: "#ff6b35" },
+  { name: "Firefox",         value:  4.0, color: "#ff9500" },
+  { name: "Edge",            value:  4.8, color: "#0078d4" },
+  { name: "Samsung Internet",value:  2.8, color: "#1428a0" },
+  { name: "Opera",           value:  2.4, color: "#ff1b2d" },
+  { name: "Others",          value:  2.0, color: "#aaaaaa" },
+];
+
+const LAST_UPDATED: [string, string][] = [
+  ["Cash", "2025-09-08"],
+  ["Fixed Income", "2025-09-08"],
+  ["Equity", "2025-09-08"],
+  ["Alternative", "2025-09-08"],
+  ["Commodity", "2025-09-08"],
+];
+
 const data = [
   {
     name: "Rakesh Patel",
@@ -71,6 +104,16 @@ export default function UIComponentsPage() {
 
   const treemapRef = useRef<TreemapChartRef>(null);
   const [treemapPath, setTreemapPath] = useState<string[]>([]);
+  const [selectedBrowser, setSelectedBrowser] = useState<string | null>(null);
+  const {
+    selectedAsset, selectedCategory, selectedProduct,
+    handleSelectAsset, handleSelectCategory, handleSelectProduct,
+    clearFilters,
+    assetData, categoryData, productData, tableRows,
+  } = usePortfolioFilters();
+
+  const hasFilter = selectedAsset !== null || selectedCategory !== null;
+
   return (
     <div className="flex flex-col gap-4 max-w-7xl mx-auto">
       <h1 className="text-2xl font-bold text-center">UI Components</h1>
@@ -226,6 +269,7 @@ export default function UIComponentsPage() {
             ]}
           />
         </div>
+
         <div>
           <h2 className="text-lg font-bold text-center">Treemap</h2>
 
@@ -367,6 +411,111 @@ export default function UIComponentsPage() {
         <div className="mb-10">
           <h2 className="text-lg font-bold text-center">Table</h2>
           <ExpandableTable data={data} columns={columns} />
+        </div>
+
+
+
+
+
+        <h1 style={{textAlign:"center", fontSize:"30px", fontWeight:"bolder"}}> ----High Charts----</h1>
+
+        <div style={{ display: "flex", gap: 16, alignItems: "flex-start", flexWrap: "wrap" }}>
+          <PieChart
+            title="Asset Class"
+            data={assetData}
+            selectedName={selectedAsset}
+            onSelect={handleSelectAsset}
+          />
+ 
+          <Divider />
+ 
+          <PieChart
+            title="Product Category"
+            data={categoryData}
+            selectedName={selectedCategory}
+            onSelect={handleSelectCategory}
+          />
+ 
+          <Divider />
+ 
+          <PieChart
+            title="Product"
+            data={productData.slice(0, 8)}
+            selectedName={selectedProduct}
+            onSelect={handleSelectProduct}
+          />
+        </div>
+        <div
+          style={{
+            fontSize: 10,
+            color: "#888",
+            marginTop: 14,
+            padding: "6px 10px",
+            background: "#fafafa",
+            borderRadius: 4,
+            border: "1px solid #f0f0f0",
+            fontFamily: "'Courier New', monospace",
+            display: "flex",
+            alignItems: "center",
+            gap: 4,
+            flexWrap: "wrap",
+          }}
+        >
+              <span style={{ marginRight: 4 }}>⏱</span>
+              Last updated:
+              {LAST_UPDATED.map(([label, date], i) => (
+                <span key={label}>
+                  {i > 0 && " |"} {label} -{" "}
+                  <span style={{ color: "#c0392b" }}>{date}</span>
+                </span>
+              ))}
+        </div>
+        <div>
+            {/* ── Holdings Table ─────────────────────────────────────────────── */}
+            <PortfolioTable rows={tableRows} />
+    
+            {/* ── Clear Filters ──────────────────────────────────────────────── */}
+           {hasFilter && (
+              <div style={{ marginTop: 12, textAlign: "center" }}>
+                <button
+                  onClick={clearFilters}
+                  style={{
+                    border: "1px solid #c0392b",
+                    color: "#c0392b",
+                    background: "#fff",
+                    padding: "5px 16px",
+                    borderRadius: 20,
+                    cursor: "pointer",
+                    fontSize: 11,
+                    fontFamily: "Georgia, serif",
+                    letterSpacing: 1,
+                  }}
+                >
+                  ✕ Clear filters
+                </button>
+              </div>
+            )} 
+        </div>
+
+        <div>
+          <PieChart
+            title="Browsers"
+            data={BROWSER_DATA}
+            selectedName={selectedBrowser}
+            onSelect={setSelectedBrowser}
+            tooltipSuffix="%"
+            collapseLegendAfter={5}     // 7 items → "2 more" button appears
+          />
+        </div>
+
+        <div>
+          <LineChart asOnDate="22 - JAN '26" />
+        </div>
+        <div>
+          <AreaStackChart 
+          fromDate="1 - APR '25"
+          toDate="22 - JAN '26"
+          />
         </div>
       </div>
     </div>

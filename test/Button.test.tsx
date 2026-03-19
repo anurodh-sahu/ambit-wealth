@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button-custom";
 import { Plus } from "lucide-react";
 
 describe("Button Component - BDD Tests", () => {
