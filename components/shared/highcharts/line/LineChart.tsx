@@ -73,7 +73,7 @@ export default function LineChart({
         backgroundColor: "transparent",
         spacing: [10, 10, 16, 10],
         animation: { duration: 600 },
-        style: { fontFamily: "Georgia, serif" },
+        style: { fontFamily: "Jost, Jost Fallback" },
       },
 
       title: { text: undefined },
@@ -87,7 +87,7 @@ export default function LineChart({
         borderRadius: 8,
         shadow: { color: "rgba(0,0,0,0.07)", offsetX: 0, offsetY: 4, opacity: 1, width: 12 },
         useHTML: true,
-        style: { fontFamily: "Georgia, serif" },
+        style: { fontFamily: "Jost, Jost Fallback" },
         crosshairs: {
           color: "rgba(0,0,0,0.08)",
           dashStyle: "Dash",
@@ -117,7 +117,7 @@ export default function LineChart({
         tickWidth: 0,
         gridLineWidth: 0,
         labels: {
-          style: { color: "#bbb", fontSize: "12px" },
+          style: { color: "#bbb", fontSize: "12px", fontFamily: "Jost, Jost Fallback" },
           formatter(this: Highcharts.AxisLabelsFormatterContextObject) {
             // Only render label when month name is non-empty
             return this.value !== "" ? String(this.value) : "";
@@ -184,8 +184,6 @@ export default function LineChart({
   return (
     <div
       style={{
-        background: "rgba(255,255,255,0.55)",
-        backdropFilter: "blur(12px)",
         borderRadius: 16,
         border: "1px solid rgba(210,210,205,0.7)",
         padding: "20px 24px",

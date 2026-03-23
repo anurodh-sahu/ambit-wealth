@@ -128,7 +128,7 @@ export default function AreaStackChart({
         backgroundColor: "transparent",
         spacing: [10, 10, 10, 10],
         animation: { duration: 700 },
-        style: { fontFamily: "Georgia, serif" },
+        style: { fontFamily: "Jost, Jost Fallback" },
       },
 
       title: { text: undefined },
@@ -141,7 +141,7 @@ export default function AreaStackChart({
         borderWidth: 1,
         borderRadius: 8,
         useHTML: true,
-        style: { fontFamily: "Georgia, serif" },
+        style: { fontFamily: "Jost, Jost Fallback" },
         crosshairs: {
           color: "rgba(0,0,0,0.08)",
           dashStyle: "Dash",

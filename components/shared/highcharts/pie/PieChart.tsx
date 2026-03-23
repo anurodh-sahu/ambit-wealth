@@ -2,41 +2,56 @@
 
 import { useEffect, useRef, useState } from "react";
 import Highcharts from "highcharts";
-import type { ChartSlice } from "@/types/portfolio";
 
-interface PieChartProps {
-  title: string;
-  data: ChartSlice[];
-  selectedName: string | null;
-  onSelect: (name: string | null) => void;
+// ── Public types ──────────────────────────────────────────────────────────────
+export interface PieSlice {
+  name: string;
+  value: number;
+  color: string;
 }
 
-// How many items to show before collapsing
-const LEGEND_COLLAPSE_THRESHOLD = 5;
+export interface PieChartProps {
+  title: string;
+  data: PieSlice[];
+  /** Controlled: which slice name is currently selected (null = none) */
+  selectedName?: string | null;
+  /** Called when a slice is clicked. null means deselect. */
+  onSelect?: (name: string | null) => void;
+  /** Suffix shown in tooltip e.g. "%" or " Cr" */
+  tooltipSuffix?: string;
+  /** How many legend items before "N more" collapse */
+  collapseLegendAfter?: number;
+}
 
-export default function PieChart({ title, data, selectedName, onSelect }: PieChartProps) {
+const COLLAPSE_AT = 5;
+
+export default function PieChart({
+  title,
+  data,
+  selectedName = null,
+  onSelect,
+  tooltipSuffix = "%",
+  collapseLegendAfter = COLLAPSE_AT,
+}: PieChartProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<Highcharts.Chart | null>(null);
   const [showAll, setShowAll] = useState(false);
 
-  const hasMore = data.length > LEGEND_COLLAPSE_THRESHOLD;
-  const visibleItems = showAll ? data : data.slice(0, LEGEND_COLLAPSE_THRESHOLD);
-  const hiddenCount = data.length - LEGEND_COLLAPSE_THRESHOLD;
+  const hasMore = data.length > collapseLegendAfter;
+  const visibleItems = showAll ? data : data.slice(0, collapseLegendAfter);
 
-  // ── Build Highcharts point objects ────────────────────────────────────────
   const buildSeriesData = (): Highcharts.PointOptionsObject[] =>
     data.map((d) => ({
       name: d.name,
       y: d.value,
       color: d.color,
-      opacity: selectedName && selectedName !== d.name ? 0.35 : 1,
+      opacity: selectedName && selectedName !== d.name ? 0.3 : 1,
       sliced: selectedName === d.name,
     }));
 
-  // ── Init chart once ───────────────────────────────────────────────────────
+  // Init once
   useEffect(() => {
     if (!containerRef.current) return;
-
     chartRef.current = Highcharts.chart(containerRef.current, {
       chart: {
         type: "pie",
@@ -50,24 +65,25 @@ export default function PieChart({ title, data, selectedName, onSelect }: PieCha
         backgroundColor: "#fff",
         borderColor: "#e0e0e0",
         borderWidth: 1,
-        style: { color: "#333", fontSize: "12px", fontFamily: "Georgia, serif" },
-        pointFormat: "<b>{point.name}</b><br/>{point.y}%",
+        style: { color: "#333", fontSize: "12px" },
+        formatter(this: Highcharts.TooltipFormatterContextObject) {
+          return `<b>${this.point.name}</b><br/>${this.y}${tooltipSuffix}`;
+        },
+        fontFamily: "Jost, Jost Fallback"
       },
       plotOptions: {
         pie: {
-        //   innerSize: "55%",
-          size: "80%",
-          center: ["38%", "50%"],
+          // innerSize: "55%",
+          size: "85%",
+          center: ["40%", "50%"],
           dataLabels: { enabled: false },
           borderWidth: 0,
           allowPointSelect: false,
-          states: {
-            hover: { halo: { size: 6 }, brightness: 0.05 },
-          },
+          states: { hover: { halo: { size: 5 }, brightness: 0.05 } },
           point: {
             events: {
               click(this: Highcharts.Point) {
-                onSelect(this.name === selectedName ? null : this.name);
+                onSelect?.(this.name === selectedName ? null : this.name);
               },
             },
           },
@@ -77,199 +93,83 @@ export default function PieChart({ title, data, selectedName, onSelect }: PieCha
       credits: { enabled: false },
       legend: { enabled: false },
     });
-
-    return () => {
-      chartRef.current?.destroy();
-      chartRef.current = null;
-    };
+    return () => { chartRef.current?.destroy(); chartRef.current = null; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── Update slices when data or selection changes ───────────────────────────
+  // Update on data/selection change
   useEffect(() => {
-    const series = chartRef.current?.series[0];
-    if (!series) return;
-    series.setData(buildSeriesData(), true, { duration: 300 });
+    chartRef.current?.series[0]?.setData(buildSeriesData(), true, { duration: 250 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, selectedName]);
 
-  // ── Window resize ─────────────────────────────────────────────────────────
+  // Resize
   useEffect(() => {
-    const handleResize = () => chartRef.current?.reflow();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    const fn = () => chartRef.current?.reflow();
+    window.addEventListener("resize", fn);
+    return () => window.removeEventListener("resize", fn);
   }, []);
 
-  // Reset expanded state when data shrinks below threshold (e.g. on filter change)
+  // Reset showAll when data shrinks
   useEffect(() => {
-    if (data.length <= LEGEND_COLLAPSE_THRESHOLD) setShowAll(false);
-  }, [data.length]);
+    if (data.length <= collapseLegendAfter) setShowAll(false);
+  }, [data.length, collapseLegendAfter]);
 
   return (
-    <div style={{ flex: 1, minWidth: 0 }}>
-      {/* Section title */}
-      <p
-        style={{
-          fontFamily: "Georgia, serif",
-          fontSize: 13,
-          fontWeight: 600,
-          color: "#333",
-          marginBottom: 4,
-          paddingLeft: 8,
-          margin: "0 0 4px 0",
-        }}
-      >
+    <div style={{ display: "flex", flexDirection: "column", minWidth: 0, fontFamily: "Jost, Jost Fallback" }}>
+      <p style={{ fontSize: 13, fontWeight: 600, color: "#333", margin: "0 0 4px 4px", fontFamily: "Jost, Jost Fallback" }}>
         {title}
       </p>
-
-      {/* Chart + Legend row */}
       <div style={{ display: "flex", alignItems: "flex-start" }}>
         {/* Donut */}
-        <div ref={containerRef} style={{ width: 140, height: 140, flexShrink: 0 }} />
+        <div ref={containerRef} style={{ width: 130, height: 130, flexShrink: 0 }} />
 
-        {/* Legend list */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-            fontFamily: "'Courier New', monospace",
-            fontSize: 11,
-            // When expanded with many items, scroll rather than overflow the layout
-            maxHeight: showAll ? 200 : "none",
-            overflowY: showAll && data.length > 8 ? "auto" : "visible",
-            paddingRight: 2,
-          }}
-        >
+        {/* Legend */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 2, fontSize: 11, paddingTop: 4 }}>
           {visibleItems.map((d) => (
-            <LegendItem
-              key={d.name}
-              slice={d}
-              isSelected={selectedName === d.name}
-              isDimmed={!!selectedName && selectedName !== d.name}
-              onSelect={onSelect}
-            />
-          ))}
-
-          {/* ── More / Less toggle ── */}
-          {hasMore && (
             <button
-              onClick={() => setShowAll((prev) => !prev)}
+              key={d.name}
+              onClick={() => onSelect?.(d.name === selectedName ? null : d.name)}
+              title={d.name}
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 4,
-                marginTop: 4,
-                padding: "2px 0",
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                color: "#c0392b",
-                fontWeight: 600,
-                fontSize: 11,
-                fontFamily: "'Courier New', monospace",
-                width: "fit-content",
+                display: "flex", alignItems: "center", gap: 6,
+                background: "none", border: "none", cursor: onSelect ? "pointer" : "default",
+                padding: "1px 0", textAlign: "left", width: "100%",
+                opacity: selectedName && selectedName !== d.name ? 0.35 : 1,
+                fontWeight: selectedName === d.name ? 700 : 400,
+                transition: "opacity 0.2s",
+                fontFamily: "Jost, Jost Fallback"
               }}
             >
-              {showAll ? (
-                <>
-                  <Arrow direction="up" /> Show less
-                </>
-              ) : (
-                <>
-                  <Arrow direction="down" /> {hiddenCount} more
-                </>
-              )}
+              <span style={{
+                width: 9, height: 9, borderRadius: "50%", background: d.color,
+                flexShrink: 0, display: "inline-block",
+                boxShadow: selectedName === d.name ? `0 0 0 2px white, 0 0 0 3.5px ${d.color}` : "none",
+              }} />
+              <span style={{ color: "#555", maxWidth: 120, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontFamily: "Jost, Jost Fallback" }}>
+                {d.name}
+              </span>
+              <span style={{ color: "#999", marginLeft: "auto", paddingLeft: 8, flexShrink: 0, fontFamily: "Jost, Jost Fallback" }}>
+                {d.value}{tooltipSuffix}
+              </span>
+            </button>
+          ))}
+          {hasMore && (
+            <button
+              onClick={() => setShowAll((p) => !p)}
+              style={{
+                display: "flex", alignItems: "center", gap: 4,
+                marginTop: 2, padding: "2px 0",
+                background: "none", border: "none", cursor: "pointer",
+                color: "#c0392b", fontWeight: 600, fontSize: 11,
+                fontFamily: "Jost, Jost Fallback",
+              }}
+            >
+              {showAll ? "▲ Show less" : `▼ ${data.length - collapseLegendAfter} more`}
             </button>
           )}
         </div>
       </div>
     </div>
-  );
-}
-
-// ── Legend Item ───────────────────────────────────────────────────────────────
-interface LegendItemProps {
-  slice: ChartSlice;
-  isSelected: boolean;
-  isDimmed: boolean;
-  onSelect: (name: string | null) => void;
-}
-
-function LegendItem({ slice, isSelected, isDimmed, onSelect }: LegendItemProps) {
-  return (
-    <button
-      onClick={() => onSelect(isSelected ? null : slice.name)}
-      title={slice.name} // Native tooltip for truncated names
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 6,
-        background: "none",
-        border: "none",
-        cursor: "pointer",
-        padding: "1px 0",
-        textAlign: "left",
-        width: "100%",
-        opacity: isDimmed ? 0.4 : 1,
-        fontWeight: isSelected ? 700 : 400,
-        transition: "opacity 0.2s",
-      }}
-    >
-      {/* Colored dot — ring highlight when selected */}
-      <span
-        style={{
-          width: 9,
-          height: 9,
-          borderRadius: "50%",
-          background: slice.color,
-          flexShrink: 0,
-          display: "inline-block",
-          boxShadow: isSelected ? `0 0 0 2px white, 0 0 0 3.5px ${slice.color}` : "none",
-          transition: "box-shadow 0.2s",
-        }}
-      />
-
-      {/* Name — truncated, full name on hover via title on parent button */}
-      <span
-        style={{
-          color: "#444",
-          maxWidth: 120,
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-          fontSize: 11,
-        }}
-      >
-        {slice.name}
-      </span>
-
-      {/* Percentage */}
-      <span
-        style={{
-          color: "#888",
-          marginLeft: "auto",
-          paddingLeft: 8,
-          flexShrink: 0,
-          fontSize: 11,
-        }}
-      >
-        {slice.value}%
-      </span>
-    </button>
-  );
-}
-
-// ── Tiny arrow icon ───────────────────────────────────────────────────────────
-function Arrow({ direction }: { direction: "up" | "down" }) {
-  return (
-    <svg
-      width="8"
-      height="8"
-      viewBox="0 0 8 8"
-      style={{ transform: direction === "up" ? "rotate(180deg)" : "none", flexShrink: 0 }}
-    >
-      <path d="M0 2 L4 6 L8 2" stroke="#c0392b" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-    </svg>
   );
 }
