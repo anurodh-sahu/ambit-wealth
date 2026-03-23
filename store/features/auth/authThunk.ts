@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import axiosInstance from "@/lib/axios";
 import type { LoginRequest, LoginResponse } from "./authTypes";
 
 export const loginUser = createAsyncThunk<
@@ -7,16 +8,15 @@ export const loginUser = createAsyncThunk<
   { rejectValue: string }
 >("auth/loginUser", async (credentials, { rejectWithValue }) => {
   try {
-    // const response = await fetch("/api/login", {
-    //   method: "POST",
-    //   body: JSON.stringify(credentials),
-    // });
-
-    // if (!response.ok) {
+    // const response = await axiosInstance.post<LoginResponse>(
+    //   "/api/login",
+    //   credentials
+    // );
+    // if (response.status !== 200) {
     //   return rejectWithValue("Invalid credentials");
     // }
-
-    // return await response.json();
+    // return response.data;
+    //return await response.json();
     const response = await new Promise<LoginResponse>((resolve) => {
       setTimeout(() => {
         resolve({

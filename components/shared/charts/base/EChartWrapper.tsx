@@ -27,7 +27,7 @@ export default function EChartWrapper({
   return (
     <ReactECharts
       option={option}
-      style={{ height }}
+      //style={{ height }}
       notMerge
       onEvents={hasEvents ? events : undefined}
       onChartReady={onChartReady}

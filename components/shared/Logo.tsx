@@ -4,8 +4,8 @@ export default function Logo() {
     <Image
       src="/logo.svg"
       alt="ambit-logo"
-      width={100}
-      height={100}
+      width={112}
+      height={62}
       className="w-[112px] h-[62px]"
     />
   );
