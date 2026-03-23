@@ -10,7 +10,7 @@
   --background: #ffffff;
   --foreground: #020618;
 
-  --card: #6e6e6e0d;
+  --card: #6e6e6e;
   --card-foreground: #020618;
 
   --border: #e2e8f0;
@@ -45,6 +45,10 @@
 
   --red-200: #FFC9C9;
   --red-300: #FFA2A2;
+  --contrast: #1F1F1F;
+  --seperator: #E3E3E3;
+  --header: #58585A;
+  --success: #17B26A;
   
   /* Chart colors - light theme */
   --chart-1: #4c5c72;
@@ -105,6 +109,13 @@
   --color-popover-foreground: var(--popover-foreground);
 
   --color-ring: var(--ring);
+  --color-contrast: var(--contrast);
+  --color-seperator: var(--seperator);
+  --color-header: var(--header);
+  --color-success: var(--success);
+  --radius-12: 12px;
+
+  --container-page: 1160px;
 }
 html {
   margin: 0;

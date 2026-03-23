@@ -105,7 +105,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
       }}
       {...props}
     >
-      <div className="relative z-10 flex gap-[10px]">
+      <div className="relative z-10 flex gap-[10px] justify-center items-center">
         {!asChild && icon && iconPosition === "left" ? (
           <span className="inline-flex items-center">{icon}</span>
         ) : null}

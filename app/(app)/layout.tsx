@@ -6,10 +6,12 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-[url('/dashboard-bg.png')] bg-cover bg-center">
       <DashboardHeader />
 
-      <main className="flex-1 bg-surface">{children}</main>
+      <main className="flex-1 w-full max-w-[var(--container-page)] mx-auto px-4 md:px-0 bg-surface">
+        {children}
+      </main>
 
       <DashboardFooter />
     </div>
