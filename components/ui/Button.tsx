@@ -25,6 +25,8 @@ const buttonVariants = cva(
 
         link: "border-2 border-red-100 bg-red-100 text-red-500 hover:bg-transparent hover:border-red-300 disabled:bg-gray-custom-200 disabled:border-gray-custom-300 disabled:text-gray-custom-400",
 
+        cta: "bg-gray-500 text-white hover:bg-gray-600 disabled:bg-gray-300 disabled:text-gray-400 border-0",
+
         // Background-image button (expects `bgImage` prop)
         image:
           "relative overflow-hidden bg-transparent text-accent-foreground border-0 hover:text-white hover:bg-primary-p before:pointer-events-none before:absolute before:inset-0 before:z-0 before:bg-[length:cover] before:bg-center before:bg-no-repeat before:[background-image:var(--button-bg-image)] before:opacity-100 hover:before:opacity-60",
