@@ -27,13 +27,13 @@ export default function ExpandableTable({ data, columns }: Props) {
   });
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-gray-200">
+    <div className="overflow-x-auto rounded-lg border border-gray-custom-200">
       <table className="w-full border-collapse text-sm">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr
               key={headerGroup.id}
-              className="bg-gray-50 border-b border-gray-200"
+              className="bg-gray-50 border-b border-gray-custom-200"
             >
               {headerGroup.headers.map((header) => (
                 <th
@@ -46,7 +46,7 @@ export default function ExpandableTable({ data, columns }: Props) {
                       header.column.columnDef.header,
                       header.getContext()
                     )}
-                    <span className="text-gray-300">
+                    <span className="text-gray-custom-300">
                       {{
                         asc: "↑",
                         desc: "↓",
@@ -59,21 +59,25 @@ export default function ExpandableTable({ data, columns }: Props) {
           ))}
         </thead>
 
-        <tbody className="divide-y divide-gray-100">
+        <tbody className="divide-y divide-gray-custom-200">
           {table.getRowModel().rows.map((row) => {
             const isParent = row.depth === 0;
             return (
               <tr
                 key={row.id}
                 className={
-                  isParent ? "bg-white border-b border-gray-200" : "bg-white"
+                  isParent
+                    ? "bg-white border-b border-gray-custom-200"
+                    : "bg-white"
                 }
               >
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
                     className={`px-4 py-3 whitespace-nowrap ${
-                      isParent ? "font-semibold text-gray-900" : "text-gray-600"
+                      isParent
+                        ? "font-semibold text-gray-custom-900"
+                        : "text-gray-600"
                     }`}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

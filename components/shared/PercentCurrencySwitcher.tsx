@@ -4,15 +4,17 @@ import { cn } from "@/lib/utils";
 
 export default function PercentCurrencySwitcher({
   selectedMetricValue,
+  onMetricChange,
 }: {
   selectedMetricValue: "percent" | "currency";
+  onMetricChange?: (value: "percent" | "currency") => void;
 }) {
   return (
     <div className="flex items-center">
       <Button
         variant="ghost"
         shape="pill"
-        onClick={() => onClearFilter}
+        onClick={() => onMetricChange?.("percent")}
         className={cn(
           "uppercase",
           selectedMetricValue === "percent" && "text-primary"
@@ -20,11 +22,11 @@ export default function PercentCurrencySwitcher({
       >
         <PercentIcon className="size-4" />
       </Button>
-      <div className="w-px bg-seperator h-6"></div>
+      <div className="w-px bg-seperator h-10"></div>
       <Button
         variant="ghost"
         shape="pill"
-        onClick={() => onClearFilter}
+        onClick={() => onMetricChange?.("currency")}
         className={cn(
           "uppercase",
           selectedMetricValue === "currency" && "text-primary"

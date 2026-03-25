@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { format } from "date-fns";
+import { format, isSameDay } from "date-fns";
 import type { DateRange } from "react-day-picker";
 import { CalendarIcon } from "lucide-react";
 
@@ -13,7 +13,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export type DateRangePickerValue = DateRange | undefined;
 
@@ -26,6 +31,7 @@ export function DateRangePicker({
   numberOfMonths = 2,
   inceptionDate,
   mode = "popover",
+  trigger,
 }: {
   value?: DateRangePickerValue;
   onChange?: (next: DateRangePickerValue) => void;
@@ -35,6 +41,7 @@ export function DateRangePicker({
   numberOfMonths?: number;
   inceptionDate?: Date;
   mode?: "popover" | "modal";
+  trigger: React.ReactNode;
 }) {
   const [open, setOpen] = React.useState(false);
   const [draft, setDraft] = React.useState<DateRangePickerValue>(value);
@@ -61,10 +68,18 @@ export function DateRangePicker({
           to: today,
         };
       },
-      ytd: () => ({
-        from: new Date(today.getFullYear(), 0, 1),
-        to: today,
-      }),
+      ytd: () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth();
+
+        const fyStartYear = month < 3 ? year - 1 : year;
+
+        return {
+          from: new Date(fyStartYear, 3, 1),
+          to: today,
+        };
+      },
       inception: () => ({
         from: inceptionDate ?? new Date(today.getFullYear(), 0, 1),
         to: today,
@@ -92,46 +107,35 @@ export function DateRangePicker({
     setActivePreset(key);
   };
 
-  const TriggerButton = (
-    <Button
-      variant="outline"
-      className={cn(
-        "justify-start gap-2 text-left font-normal",
-        !range?.from && "text-muted-foreground",
-        className
-      )}
-      icon={<CalendarIcon className="size-4" />}
-    >
-      {label}
-    </Button>
-  );
+  const TriggerButton = trigger;
 
   const Panel = (
-    <div className={cn("w-[700px] overflow-hidden", "min-h-[350px]")}>
-      <div className="flex">
+    <div className={cn("w-[full] overflow-hidden", "min-h-[350px]")}>
+      <div className="flex justify-between w-full">
         {/* LEFT PANEL */}
-        <div className="w-52 border-r p-3 space-y-2">
+        <div className="w-[160px] border-r p-3 space-y-2">
           <Button
-            variant={activePreset === "custom" ? "default" : "ghost"}
+            variant={"date_modal"}
+            isActive={activePreset === "custom"}
             size="sm"
-            className="w-full justify-start"
+            className="w-full justify-start px-3 py-2 font-sans text-sm font-semibold leading-5 tracking-normal"
             onClick={() => setActivePreset("custom")}
           >
             Custom Range
           </Button>
 
           <Button
-            variant={activePreset === "mtd" ? "default" : "ghost"}
-            size="sm"
-            className="w-full justify-start"
+            variant={"date_modal"}
+            className=""
+            isActive={activePreset === "mtd"}
             onClick={() => handlePreset("mtd")}
           >
             Month Till Date
           </Button>
 
           <Button
-            variant={activePreset === "qtd" ? "default" : "ghost"}
-            size="sm"
+            variant={"date_modal"}
+            isActive={activePreset === "qtd"}
             className="w-full justify-start"
             onClick={() => handlePreset("qtd")}
           >
@@ -139,8 +143,8 @@ export function DateRangePicker({
           </Button>
 
           <Button
-            variant={activePreset === "ytd" ? "default" : "ghost"}
-            size="sm"
+            variant={"date_modal"}
+            isActive={activePreset === "ytd"}
             className="w-full justify-start"
             onClick={() => handlePreset("ytd")}
           >
@@ -148,8 +152,8 @@ export function DateRangePicker({
           </Button>
 
           <Button
-            variant={activePreset === "inception" ? "default" : "ghost"}
-            size="sm"
+            variant={"date_modal"}
+            isActive={activePreset === "inception"}
             className="w-full justify-start"
             onClick={() => handlePreset("inception")}
           >
@@ -158,7 +162,7 @@ export function DateRangePicker({
 
           <Button
             variant="ghost"
-            className="px-0 text-destructive justify-start !background-none hover:bg-transparent"
+            className="px-3 font-semibold text-primary-p justify-start !background-none hover:bg-transparent"
             onClick={() => {
               setDraft(undefined);
               setActivePreset("custom");
@@ -175,25 +179,44 @@ export function DateRangePicker({
             numberOfMonths={numberOfMonths}
             selected={range}
             onSelect={(next) => {
-              setDraft(next);
+              setDraft((prev) => {
+                if (!next) return undefined;
+
+                // In range mode, some flows return { from, to } with same day on first click.
+                // Normalize first selection to only set `from`.
+                const isFirstPick = !prev?.from || Boolean(prev?.to);
+                if (
+                  next.from &&
+                  next.to &&
+                  isSameDay(next.from, next.to) &&
+                  isFirstPick
+                ) {
+                  return { from: next.from, to: undefined };
+                }
+
+                return next;
+              });
               setActivePreset("custom");
             }}
+            classNames={{}}
             initialFocus
           />
         </div>
       </div>
 
-      {/* FOOTER */}
-      <div className="flex items-center justify-between border-t p-3">
-        <span className="text-sm text-muted-foreground">
-          {range?.from ? format(range.from, "LLL dd, y") : "—"} -{" "}
-          {range?.to ? format(range.to, "LLL dd, y") : "—"}
-        </span>
+      <div className="flex items-center justify-between border-t pt-6">
+        {range?.from && range?.to ? (
+          <span className="text-sm text-muted-foreground">
+            {range?.from ? format(range.from, "LLL dd, y") : "—"} -{" "}
+            {range?.to ? format(range.to, "LLL dd, y") : "—"}
+          </span>
+        ) : (
+          <span className="text-sm text-muted-foreground"></span>
+        )}
 
         <div className="flex gap-2">
           <Button
-            variant="outline"
-            size="sm"
+            variant="cancel"
             onClick={() => {
               setDraft(value);
               setActivePreset("custom");
@@ -203,7 +226,6 @@ export function DateRangePicker({
             Cancel
           </Button>
           <Button
-            size="sm"
             disabled={!range?.from || !range?.to}
             onClick={() => {
               onChange?.(draft);
@@ -221,7 +243,10 @@ export function DateRangePicker({
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>{TriggerButton}</DialogTrigger>
-        <DialogContent className="p-0">{Panel}</DialogContent>
+        <DialogContent className="flex !w-[850px] flex-col items-start py-6 px-[32px] rounded-lg border border-dialog-border bg-dialog-background shadow-xs [&>button]:hidden">
+          <DialogTitle className="m-0 p-0"></DialogTitle>
+          {Panel}
+        </DialogContent>
       </Dialog>
     );
   }
@@ -229,10 +254,7 @@ export function DateRangePicker({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>{TriggerButton}</PopoverTrigger>
-      <PopoverContent
-        align={align}
-        className={cn("w-[700px] overflow-hidden p-0", "min-h-[350px]")}
-      >
+      <PopoverContent align={align} className={cn("overflow-hidden p-0", "")}>
         {Panel}
       </PopoverContent>
     </Popover>

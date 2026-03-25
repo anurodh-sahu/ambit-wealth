@@ -15,7 +15,7 @@ const buttonVariants = cva(
           "bg-primary text-primary-foreground hover:bg-[#FB2C36] border-2 border-primary hover:border-2 hover:border-red-300 disabled:bg-red-200 disabled:text-white",
 
         outline:
-          "border-2 border-gray-300 bg-gray-100 text-gray-900 hover:bg-transparent hover:border-2 hover:border-red-300 disabled:bg-gray-200",
+          "border-2 border-gray-custom-300 bg-gray-custom-100 text-gray-custom-900 hover:border-red-300 disabled:bg-gray-custom-200",
 
         ghost:
           "bg-transparent text-foreground hover:bg-muted aria-expanded:bg-muted dark:hover:bg-muted/50",
@@ -23,11 +23,16 @@ const buttonVariants = cva(
         destructive:
           "border border-destructive bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
 
-        link: "border-2 border-red-100 bg-red-100 text-red-500 hover:bg-transparent hover:border-red-300 disabled:bg-gray-200 disabled:border-gray-300 disabled:text-gray-400",
+        link: "border-2 border-red-100 bg-red-100 text-red-500 hover:bg-transparent hover:border-red-300 disabled:bg-gray-custom-200 disabled:border-gray-custom-300 disabled:text-gray-custom-400",
 
         // Background-image button (expects `bgImage` prop)
         image:
-          "relative overflow-hidden bg-transparent text-accent-foreground border-0 hover:text-white hover:bg-primary-p hover:before:opacity-60 before:pointer-events-none before:absolute before:inset-0 before:z-0 before:bg-cover before:bg-center before:bg-no-repeat before:[background-image:var(--button-bg-image)] before:opacity-100",
+          "relative overflow-hidden bg-transparent text-accent-foreground border-0 hover:text-white hover:bg-primary-p before:pointer-events-none before:absolute before:inset-0 before:z-0 before:bg-[length:cover] before:bg-center before:bg-no-repeat before:[background-image:var(--button-bg-image)] before:opacity-100 hover:before:opacity-60",
+        date_modal:
+          "w-full justify-start text-muted-foreground  font-normal leading-5 tracking-normal active:bg-red-50 active:text-primary-p",
+        confirm: "bg-primary text-primary-foreground",
+        cancel:
+          "border-2  border-gray-custom-300 text-gray-900 hover:border-red-300 disabled:bg-gray-custom-200 font-semibold",
       },
 
       size: {
@@ -93,6 +98,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
         variant === "image" &&
           isActive &&
           "text-white bg-primary-p before:opacity-60",
+        variant === "date_modal" &&
+          isActive &&
+          "font-semibold bg-red-50 text-primary-p",
         className
       )}
       style={{

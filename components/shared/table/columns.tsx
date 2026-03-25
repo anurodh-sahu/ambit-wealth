@@ -13,13 +13,13 @@ export const columns: ColumnDef<PortfolioRow>[] = [
           className=""
           style={{ paddingLeft: isParent ? 0 : `${row.depth * 20}px` }}
         >
-          {!isParent && <span className="text-gray-300 text-xs">→</span>}
+          {!isParent && <span className="text-gray-custom-300 text-xs">→</span>}
           {isParent ? (
             <div className="flex items-center gap-2 justify-between">
               <div className="flex-1">{getValue() as string}</div>
               <button
                 onClick={row.getToggleExpandedHandler()}
-                className="text-gray-400 shrink-0 text-xs"
+                className="text-gray-custom-400 shrink-0 text-xs"
               >
                 {row.getIsExpanded() ? "▼" : "▶"}
               </button>

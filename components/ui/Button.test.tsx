@@ -16,13 +16,13 @@ describe("Button component", () => {
 
   it("applies secondary variant", () => {
     render(
-      <Button variant="secondary" className="bg-gray-200">
+      <Button variant="secondary" className="bg-gray-custom-200">
         Test
       </Button>
     );
     const button = screen.getByRole("button");
 
-    expect(button.className).toContain("bg-gray-200");
+    expect(button.className).toContain("bg-gray-custom-200");
   });
 
   it("applies correct size", () => {
