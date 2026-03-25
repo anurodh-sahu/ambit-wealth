@@ -2,8 +2,8 @@ import Image from "next/image";
 import { ChevronUpIcon, Info } from "lucide-react";
 import LineStackChart from "@/components/shared/charts/line/LineStackChart";
 import FilterBar from "@/components/shared/FilterBar";
-import KPICard from "@/components/shared/KPICard";
-import { useHome } from "@/features/dashboard/hooks/useHome";
+import KPICard, { KPICardProps } from "@/components/shared/KPICard";
+import { useDashboard } from "@/features/dashboard/hooks/useDashboard";
 import {
   Tooltip,
   TooltipContent,
@@ -11,23 +11,21 @@ import {
 } from "@/components/ui/tooltip";
 import ChartWrapper from "@/components/shared/charts/ChartWrapper";
 import ProgressCard from "@/components/shared/ProgressCard";
-interface KPICardProps {
-  tooltipTitle: string;
-  tooltipContent: string;
-  tooltipTriggerAriaLabel: string;
-  value: string;
-  trend: string;
-}
+import KPICardGrid from "@/components/shared/KPICardGrid";
+import ProgressCardGrid from "@/components/shared/ProgressCardGrid";
+import DateFilterBar from "@/components/shared/DateFilterBar";
+import WelcomeSection from "./WelcomeSection";
+
 const kpiData: KPICardProps[] = [
   {
-    tooltipTitle: "Current Value",
+    tooltipTitle: "Cash",
     tooltipContent: "Add to library",
     tooltipTriggerAriaLabel: "More info about current value",
     value: "₹24.77 Cr",
     trend: "21%",
   },
   {
-    tooltipTitle: "Invested Amount",
+    tooltipTitle: "Fixed Income",
     tooltipContent: "Total amount invested so far",
     tooltipTriggerAriaLabel: "More info about invested amount",
     value: "₹18.50 Cr",
@@ -48,93 +46,52 @@ const kpiData: KPICardProps[] = [
     trend: "5%",
   },
 ];
-interface summaryCardProps {
-  label: string;
-  progress: number;
-  value: number;
-  trend: number;
-  marketValue: number;
-  investedAmount: number;
-  isLoss?: boolean;
-}
-const summaryData: summaryCardProps[] = [
-  {
-    label: "Current Value",
-    progress: 80,
-    value: 240000000,
-    trend: 21,
-    marketValue: 20,
-    investedAmount: 18.5,
-    isLoss: false,
-  },
-  {
-    label: "Invested Amount",
-    progress: 70,
-    value: 240000000,
-    trend: 21,
-    marketValue: 20,
-    investedAmount: 18.5,
-  },
-  {
-    label: "Total Gains",
-    progress: 100,
-    value: 240000000,
-    trend: 21,
-    marketValue: 20,
-    investedAmount: 18.5,
-  },
-  {
-    label: "1Y Returns",
-    progress: 100,
-    value: 240000000,
-    trend: 21,
-    marketValue: 20,
-    investedAmount: 18.5,
-  },
-  {
-    label: "Net Flow",
-    progress: 100,
-    value: 240000000,
-    trend: 21,
-    marketValue: 20,
-    investedAmount: 18.5,
-  },
-  {
-    label: "Net Flow",
-    progress: 100,
-    value: 240000000,
-    trend: 21,
-    marketValue: 20,
-    investedAmount: 18.5,
-    isLoss: false,
-  },
-];
+const skeletonCount = 6;
+const kpiSkeletonCount = 4;
 export default function Main() {
-  const { loading, data, error } = useHome();
-  //if (loading) return <div>Loading...</div>;
-  //if (error) return <div>Error: {error} </div>;
-  //return <div>{data?.message}</div>;
+  const { loading, data, error } = useDashboard();
+  if (error) return <div>Error: {error} </div>;
   return (
-    <div>
-      <FilterBar
+    <div className="flex flex-col gap-3">
+      <WelcomeSection
+        userName={"Rakesh"}
+        inceptionDate={new Date(2025, 3, 28)}
+      />
+      {/* <FilterBar
         items={[
           { label: "#Poduct Category", key: "category" },
           { label: "#Security", key: "subcategory" },
         ]}
         onClearFilter={() => {}}
+      /> */}
+      <DateFilterBar
+        isDashboard={true}
+        filterLabel="Profile Value"
+        asOnDate={new Date(2026, 2, 22)}
+        filterValue="₹24.77 Cr"
       />
       <div className="grid grid-cols-3 gap-4">
-        {summaryData.map((summary) => (
-          <ProgressCard key={summary.label} {...summary} />
-        ))}
+        {/* {loading
+          ? Array.from({ length: skeletonCount }, (_, i) => (
+              <ProgressCard key={i} loading />
+            ))
+          : (data ?? []).map((item, i) => (
+              <ProgressCard
+                key={`${item.label}-${i}`}
+                loading={false}
+                label={item.label}
+                value={item.value}
+                progress={item.progress}
+                isLoss={item.isLoss}
+              />
+            ))} */}
       </div>
-      <div className="grid grid-cols-4 gap-4">
-        {kpiData.map((kpi) => (
-          <KPICard key={kpi.tooltipTitle} {...kpi} />
-        ))}
-      </div>
-
-      <ChartWrapper>
+      <KPICardGrid
+        loading={loading}
+        kpiSkeletonCount={kpiSkeletonCount}
+        kpiData={kpiData}
+      />
+      <ChartWrapper title="Portfolio Movement">
         <LineStackChart
           labels={[
             "Jan",
@@ -159,6 +116,22 @@ export default function Main() {
           ]}
         />
       </ChartWrapper>
+      <DateFilterBar
+        isDashboard={true}
+        filterLabel="Profile Value"
+        asOnDate={new Date(2026, 2, 22)}
+        filterValue="₹24.77 Cr"
+      />
+      <div className="flex  gap-4">
+        <div className="w-[200px]">Hi</div>
+        <div className="flex-1">
+          <ProgressCardGrid
+            loading={loading}
+            skeletonCount={skeletonCount}
+            data={data ?? []}
+          />
+        </div>
+      </div>
     </div>
   );
 }

@@ -2,19 +2,40 @@ import Image from "next/image";
 import { Tooltip, TooltipTrigger, TooltipContent } from "../ui/tooltip";
 import { Info } from "lucide-react";
 import { ChevronUpIcon } from "lucide-react";
-export default function KPICard({
-  tooltipTriggerAriaLabel,
-  tooltipContent,
-  tooltipTitle,
-  value,
-  trend,
-}: {
-  value: string;
-  trend: string;
-  tooltipTitle: string;
-  tooltipContent: string;
-  tooltipTriggerAriaLabel: string;
-}) {
+export type KPICardProps =
+  | { loading: true }
+  | {
+      loading?: false;
+      tooltipTitle: string;
+      tooltipContent: string;
+      tooltipTriggerAriaLabel: string;
+      value: string;
+      trend: string;
+    };
+export default function KPICard(props: KPICardProps) {
+  if (props.loading) {
+    return (
+      <div className="flex flex-col relative p-4 rounded-[28px] overflow-hidden bg-gray-custom-200 animate-pulse">
+        {/* Background shimmer */}
+        <div className="absolute inset-0 bg-gray-custom-200 opacity-30" />
+
+        <div className="relative z-10 flex flex-col gap-4">
+          {/* Title + icon */}
+          <div className="flex items-center gap-2">
+            <div className="h-4 w-24 bg-gray-custom-300 rounded" />
+            <div className="w-6 h-6 bg-gray-custom-300 rounded-lg" />
+          </div>
+
+          {/* Value + trend */}
+          <div className="flex justify-between items-center">
+            <div className="h-10 w-20 bg-gray-custom-300 rounded" />
+            <div className="h-6 w-12 bg-gray-custom-300 rounded" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+  const { tooltipTitle, tooltipContent, value, trend } = props;
   return (
     <div className="flex flex-col relative p-4 rounded-[28px] overflow-hidden">
       <Image
@@ -28,14 +49,14 @@ export default function KPICard({
       <div className="relative z-10 flex flex-col">
         <div className="text-base font-light tracking-normal leading-6 text-black flex items-center gap-2">
           <span className="uppercase">{tooltipTitle}</span>{" "}
-          <div className="w-6 h-6 flex items-center justify-center rounded-lg border border-gray-300">
+          <div className="w-6 h-6 flex items-center justify-center rounded-lg border border-gray-custom-300">
             <Tooltip>
               <TooltipTrigger
                 type="button"
                 className="inline-flex size-full items-center justify-center rounded-md border-0 bg-transparent p-0 text-inherit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 aria-label="More info about current value"
               >
-                <Info className="w-4 h-4 text-gray-600" strokeWidth={2} />
+                <Info className="w-4 h-4 text-gray--600" strokeWidth={2} />
               </TooltipTrigger>
               <TooltipContent side="top" sideOffset={6}>
                 <p>{tooltipContent}</p>

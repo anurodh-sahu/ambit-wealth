@@ -1,8 +1,27 @@
 "use client";
+import { cn } from "@/lib/utils";
 import PercentCurrencySwitcher from "@/components/shared/PercentCurrencySwitcher";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+import { Fragment } from "react/jsx-runtime";
+const navLinks = [
+  {
+    href: "/portfolio/overview",
+    label: "Overview",
+  },
+  {
+    href: "/portfolio/allocation",
+    label: "Allocation",
+  },
+  {
+    href: "/portfolio/performance",
+    label: "Performance",
+  },
+  {
+    href: "/portfolio/benchmark",
+    label: "Benchmark",
+  },
+];
 export default function PortfolioLayout({
   children,
 }: {
@@ -10,52 +29,28 @@ export default function PortfolioLayout({
 }) {
   const pathname = usePathname();
   return (
-    <div className="px-6 py-3">
+    <div className="px-6 ">
       <div className="flex justify-between items-center border-b border-black/10 ">
-        <div className="ml-1 flex gap-6 text-sm uppercase leading-5 tracking-normal font-normal text-secondary-foreground [&>Link]:px-6 [&>Link]:py-2">
-          <Link
-            href="/portfolio/overview"
-            className={
-              pathname === "/portfolio/overview"
-                ? "text-primary"
-                : "hover:text-secondary-foreground"
-            }
-          >
-            Overview
-          </Link>
-          <div className="text-secondary-foreground">|</div>
-          <Link
-            href="/portfolio/allocation"
-            className={
-              pathname === "/portfolio/allocation"
-                ? "text-primary"
-                : "hover:text-secondary-foreground"
-            }
-          >
-            Allocation
-          </Link>
-          <div className="text-secondary-foreground">|</div>
-          <Link
-            href="/portfolio/performance"
-            className={
-              pathname === "/portfolio/performance"
-                ? "text-primary"
-                : "hover:text-secondary-foreground"
-            }
-          >
-            Performance
-          </Link>
-          <div className="text-secondary-foreground">|</div>
-          <Link
-            href="/portfolio/benchmark"
-            className={
-              pathname === "/portfolio/benchmark"
-                ? "text-primary"
-                : "hover:text-foreground"
-            }
-          >
-            Benchmark
-          </Link>
+        <div className="ml-1 flex items-center gap-6 text-sm uppercase leading-5 tracking-normal font-normal text-secondary-foreground [&>Link]:px-6 [&>Link]:py-2">
+          {navLinks.map((link, index) => (
+            <Fragment key={link.href}>
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "px-6 py-[14px]",
+                  pathname === link.href
+                    ? "text-primary"
+                    : "hover:text-secondary-foreground"
+                )}
+              >
+                {link.label}
+              </Link>
+              {index !== navLinks.length - 1 && (
+                <div className="text-secondary-foreground">|</div>
+              )}
+            </Fragment>
+          ))}
         </div>
         <PercentCurrencySwitcher selectedMetricValue="percent" />
       </div>

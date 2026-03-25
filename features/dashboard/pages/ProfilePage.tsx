@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import PercentCurrencySwitcher from "@/components/shared/PercentCurrencySwitcher";
 
-export default function HomePage() {
+export default function ProfilePage() {
   const pathname = usePathname();
   return (
     <div className="px-6 py-3">

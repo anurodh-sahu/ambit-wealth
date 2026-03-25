@@ -9,7 +9,7 @@ export default function AuthLayout({
     <div className="flex min-h-screen flex-col bg-[url('/dashboard-bg.png')] bg-cover bg-center">
       <DashboardHeader />
 
-      <main className="flex-1 w-full max-w-[var(--container-page)] mx-auto px-4 md:px-0 bg-surface">
+      <main className="flex-1 w-full max-w-[var(--container-page)] mx-auto px-4 pt-6 md:px-0 bg-surface">
         {children}
       </main>
 
