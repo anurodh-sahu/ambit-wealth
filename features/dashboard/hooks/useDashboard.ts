@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-// import { getDashboard } from "@/features/dashboard/services/dashboard.service";
+import { getDashboard } from "@/features/dashboard/services/dashboard.service";
 
 export type DashboardSummaryCard = {
   label: string;
@@ -24,9 +24,12 @@ export function useDashboard() {
       setError(null);
 
       // Temporary mock — keep loading true until this resolves (do not setLoading in finally before await)
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Fix me: replace with real API
-      // const queryParams = new URLSearchParams({ email: "...", password: "..." });
-      // const result = await getDashboard(queryParams.toString());
+      //await new Promise((resolve) => setTimeout(resolve, 2000)); // Fix me: replace with real API
+      const queryParams = new URLSearchParams({
+        email: "...",
+        password: "...",
+      });
+      const result = await getDashboard(queryParams.toString());
 
       setData([
         {

@@ -1,20 +1,12 @@
-import Image from "next/image";
-import { ChevronUpIcon, Info } from "lucide-react";
 import LineStackChart from "@/components/shared/charts/line/LineStackChart";
-import FilterBar from "@/components/shared/FilterBar";
-import KPICard, { KPICardProps } from "@/components/shared/KPICard";
+import { KPICardProps } from "@/components/shared/KPICard";
 import { useDashboard } from "@/features/dashboard/hooks/useDashboard";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import ChartWrapper from "@/components/shared/charts/ChartWrapper";
-import ProgressCard from "@/components/shared/ProgressCard";
 import KPICardGrid from "@/components/shared/KPICardGrid";
 import ProgressCardGrid from "@/components/shared/ProgressCardGrid";
 import DateFilterBar from "@/components/shared/DateFilterBar";
 import WelcomeSection from "./WelcomeSection";
+import TitleBar from "@/components/shared/TitleBar";
 
 const kpiData: KPICardProps[] = [
   {
@@ -52,84 +44,103 @@ export default function Main() {
   const { loading, data, error } = useDashboard();
   if (error) return <div>Error: {error} </div>;
   return (
-    <div className="flex flex-col gap-3">
-      <WelcomeSection
-        userName={"Rakesh"}
-        inceptionDate={new Date(2025, 3, 28)}
-      />
-      {/* <FilterBar
+    <div className="flex flex-col gap-[123px]">
+      <div className="flex flex-col gap-3">
+        <WelcomeSection
+          userName={"Rakesh"}
+          inceptionDate={new Date(2025, 3, 28)}
+        />
+        {/* <FilterBar
         items={[
           { label: "#Poduct Category", key: "category" },
           { label: "#Security", key: "subcategory" },
         ]}
         onClearFilter={() => {}}
       /> */}
-      <DateFilterBar
-        isDashboard={true}
-        filterLabel="Profile Value"
-        asOnDate={new Date(2026, 2, 22)}
-        filterValue="₹24.77 Cr"
-      />
-      <div className="grid grid-cols-3 gap-4">
-        {/* {loading
-          ? Array.from({ length: skeletonCount }, (_, i) => (
-              <ProgressCard key={i} loading />
-            ))
-          : (data ?? []).map((item, i) => (
-              <ProgressCard
-                key={`${item.label}-${i}`}
-                loading={false}
-                label={item.label}
-                value={item.value}
-                progress={item.progress}
-                isLoss={item.isLoss}
-              />
-            ))} */}
-      </div>
-      <KPICardGrid
-        loading={loading}
-        kpiSkeletonCount={kpiSkeletonCount}
-        kpiData={kpiData}
-      />
-      <ChartWrapper title="Portfolio Movement">
-        <LineStackChart
-          labels={[
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ]}
-          series={[
-            {
-              name: "Series 1",
-              type: "line",
-              data: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120],
-            },
-          ]}
+        <DateFilterBar
+          isDashboard={true}
+          filterLabel="Profile Value"
+          asOnDate={new Date(2026, 2, 22)}
+          filterValue="₹24.77 Cr"
         />
-      </ChartWrapper>
-      <DateFilterBar
-        isDashboard={true}
-        filterLabel="Profile Value"
-        asOnDate={new Date(2026, 2, 22)}
-        filterValue="₹24.77 Cr"
-      />
-      <div className="flex  gap-4">
-        <div className="w-[200px]">Hi</div>
-        <div className="flex-1">
-          <ProgressCardGrid
-            loading={loading}
-            skeletonCount={skeletonCount}
-            data={data ?? []}
+
+        <KPICardGrid
+          loading={loading}
+          kpiSkeletonCount={kpiSkeletonCount}
+          kpiData={kpiData}
+        />
+        <ChartWrapper title="Portfolio Movement" isScale={true}>
+          <LineStackChart
+            labels={[
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
+            ]}
+            series={[
+              {
+                name: "Series 1",
+                type: "line",
+                data: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120],
+              },
+            ]}
           />
+        </ChartWrapper>
+      </div>
+      <div className="flex flex-col gap-4">
+        <TitleBar
+          filterLabel="INVESTMENT SUMMARY"
+          asOnDate={new Date(2026, 2, 22)}
+          filterValue="₹24.77 Cr"
+        />
+        <div className="flex  gap-4">
+          <div className="w-[295px] h-[360px]">
+            <ChartWrapper
+              title=""
+              bgImage="/side-chart-bg.png"
+              borderRadius="16px"
+              isScale={false}
+            >
+              <LineStackChart
+                labels={[
+                  "Jan",
+                  "Feb",
+                  "Mar",
+                  "Apr",
+                  "May",
+                  "Jun",
+                  "Jul",
+                  "Aug",
+                  "Sep",
+                  "Oct",
+                  "Nov",
+                  "Dec",
+                ]}
+                series={[
+                  {
+                    name: "Series 1",
+                    type: "line",
+                    data: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120],
+                  },
+                ]}
+              />
+            </ChartWrapper>
+          </div>
+          <div className="flex-1">
+            <ProgressCardGrid
+              loading={loading}
+              skeletonCount={skeletonCount}
+              data={data ?? []}
+            />
+          </div>
         </div>
       </div>
     </div>

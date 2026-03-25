@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Jost, Inter, Geist_Mono } from "next/font/google";
 import ReduxProvider from "@/store/ReduxProvider";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import Providers from "@/app/provider";
 import "./globals.css";
 
 const jost = Jost({
@@ -35,9 +36,11 @@ export default function RootLayout({
       className={`${jost.variable} ${inter.variable} ${geistMono.variable}`}
     >
       <body className="antialiased">
-        <TooltipProvider>
-          <ReduxProvider>{children}</ReduxProvider>
-        </TooltipProvider>
+        <Providers>
+          <TooltipProvider>
+            <ReduxProvider>{children}</ReduxProvider>
+          </TooltipProvider>
+        </Providers>
       </body>
     </html>
   );

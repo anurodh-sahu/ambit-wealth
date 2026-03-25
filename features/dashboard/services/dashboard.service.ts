@@ -6,7 +6,7 @@ export async function getDashboard(
 ): Promise<LoginResponse> {
   try {
     const params = new URLSearchParams(queryParams);
-    const res = await apiFetch(`/api/dashboard/home?${params.toString()}`, {
+    const res = await apiFetch(`/api/user`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       //body: JSON.stringify(payload),
