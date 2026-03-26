@@ -2,7 +2,110 @@ import { render, screen } from "@testing-library/react";
 import { BubbleAvatar } from "@/components/shared/BubbleAvatar";
 
 describe("BubbleAvatar", () => {
-  describe("Initials Generation", () => {
+  // ❌ FAILING TESTS FIRST - Edge cases and error handling (not yet implemented)
+  describe("❌ Initials Generation - Edge Cases (Currently Failing)", () => {
+    it("should handle null name gracefully", () => {
+      const { container } = render(<BubbleAvatar name={null as any} />);
+      expect(container.querySelector('[class*="rounded-full"]')).toBeInTheDocument();
+    });
+
+    it("should handle undefined name gracefully", () => {
+      const { container } = render(<BubbleAvatar name={undefined as any} />);
+      expect(container.querySelector('[class*="rounded-full"]')).toBeInTheDocument();
+    });
+
+    it("should display fallback avatar when name contains only numbers", () => {
+      render(<BubbleAvatar name="12345" />);
+      // Should handle gracefully instead of showing "11"
+      expect(screen.queryByText("11")).not.toBeInTheDocument();
+    });
+
+    it("should generate consistent color for same name across renders", () => {
+      const { rerender } = render(<BubbleAvatar name="John Doe" />);
+      const color1 = document.querySelector('[class*="rounded-full"]')?.className;
+      
+      rerender(<BubbleAvatar name="John Doe" />);
+      const color2 = document.querySelector('[class*="rounded-full"]')?.className;
+      
+      expect(color1).toBe(color2);
+    });
+
+    it("should NOT display initials if name contains only special characters", () => {
+      render(<BubbleAvatar name="@#$%" />);
+      expect(screen.queryByText("@@")).not.toBeInTheDocument();
+    });
+  });
+
+  // ❌ FAILING TESTS - Invalid size prop handling
+  describe("❌ Size Variants - Edge Cases (Currently Failing)", () => {
+    it("should fall back to default size when invalid size prop is provided", () => {
+      const { container } = render(
+        <BubbleAvatar name="John Doe" size={"invalid" as any} />
+      );
+      // Should default to md
+      expect(container.firstChild).toHaveClass("h-8", "w-8", "text-sm");
+    });
+
+    it("should handle numeric size values gracefully", () => {
+      const { container } = render(
+        <BubbleAvatar name="John Doe" size={48 as any} />
+      );
+      expect(container.querySelector('[class*="rounded-full"]')).toBeInTheDocument();
+    });
+  });
+
+  // ❌ FAILING TESTS - Color theming
+  describe("❌ Styling - Color Variants (Currently Failing)", () => {
+    it("should apply different background colors based on name hash", () => {
+      const { rerender, container: container1 } = render(
+        <BubbleAvatar name="Alice Smith" />
+      );
+      const color1 = getComputedStyle(container1.firstChild as Element).backgroundColor;
+
+      rerender(<BubbleAvatar name="Bob Johnson" />);
+      const container2 = document.querySelector('[class*="rounded-full"]');
+      const color2 = getComputedStyle(container2 as Element).backgroundColor;
+
+      // Different names should likely have different colors
+      expect(color1).not.toBe(color2);
+    });
+
+    it("should support custom background color prop", () => {
+      const { container } = render(
+        <BubbleAvatar name="John Doe" bgColor="bg-primary" />
+      );
+      expect(container.firstChild).toHaveClass("bg-primary");
+    });
+  });
+
+  // ❌ FAILING TESTS - Accessibility improvements
+  describe("❌ Accessibility (Currently Failing)", () => {
+    it("should announce initials to screen readers automatically", () => {
+      render(<BubbleAvatar name="John Doe" />);
+      const avatar = screen.getByRole("img", { hidden: true });
+      expect(avatar).toHaveAttribute("aria-label");
+      expect(avatar.getAttribute("aria-label")).toContain("JD");
+    });
+
+    it("should have proper role attribute", () => {
+      const { container } = render(<BubbleAvatar name="John Doe" />);
+      expect(container.firstChild).toHaveAttribute("role", "img");
+    });
+
+    it("should provide helpful aria-description", () => {
+      render(
+        <BubbleAvatar
+          name="John Doe"
+          aria-description="Avatar for John Doe"
+        />
+      );
+      const avatar = document.querySelector('[aria-description]');
+      expect(avatar).toBeInTheDocument();
+    });
+  });
+
+  // ✅ PASSING TESTS - Current working functionality
+  describe("✅ Initials Generation (Passing)", () => {
     it("generates initials from first and last name", () => {
       render(<BubbleAvatar name="John Doe" />);
       expect(screen.getByText("JD")).toBeInTheDocument();
@@ -30,7 +133,8 @@ describe("BubbleAvatar", () => {
     });
   });
 
-  describe("Size Variants", () => {
+  // ✅ PASSING TESTS - Size variants
+  describe("✅ Size Variants (Passing)", () => {
     it("applies small size classes when size is sm", () => {
       const { container } = render(
         <BubbleAvatar name="John Doe" size="sm" />
@@ -65,7 +169,8 @@ describe("BubbleAvatar", () => {
     });
   });
 
-  describe("Styling", () => {
+  // ✅ PASSING TESTS - Styling
+  describe("✅ Styling (Passing)", () => {
     it("applies secondary background and text color", () => {
       const { container } = render(<BubbleAvatar name="John Doe" />);
       expect(container.firstChild).toHaveClass(
@@ -96,7 +201,8 @@ describe("BubbleAvatar", () => {
     });
   });
 
-  describe("Attributes", () => {
+  // ✅ PASSING TESTS - HTML attributes
+  describe("✅ HTML Attributes (Passing)", () => {
     it("supports data-testid attribute", () => {
       render(
         <BubbleAvatar name="John Doe" data-testid="custom-avatar" />

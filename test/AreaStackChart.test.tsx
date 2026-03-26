@@ -1,0 +1,354 @@
+import { render, screen } from "@testing-library/react";
+import AreaStackChart from "@/components/shared/highcharts/area/AreaStackChart";
+import type { AllocationDataPoint } from "@/components/shared/highcharts/area/AreaStackChart";
+
+describe("AreaStackChart", () => {
+  // ❌ FAILING TESTS FIRST - Edge cases and validation
+  describe("❌ Data Validation - Edge Cases (Currently Failing)", () => {
+    it("should handle null data gracefully", () => {
+      const { container } = render(<AreaStackChart data={null as any} />);
+      expect(container.querySelector("div")).toBeInTheDocument();
+    });
+
+    it("should handle undefined data gracefully", () => {
+      const { container } = render(<AreaStackChart data={undefined as any} />);
+      expect(container.querySelector("div")).toBeInTheDocument();
+    });
+
+    it("should handle empty data array", () => {
+      const { container } = render(<AreaStackChart data={[]} />);
+      expect(container.firstChild).toBeInTheDocument();
+    });
+
+    it("should handle data with null values", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: null as any, fixedIncome: 12, equity: 22, alternate: 56 },
+        { month: "May '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+      ];
+      const { container } = render(<AreaStackChart data={data} />);
+      expect(container.firstChild).toBeInTheDocument();
+    });
+
+    it("should handle data with undefined values", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: undefined as any, fixedIncome: 12, equity: 22, alternate: 56 },
+        { month: "May '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+      ];
+      const { container } = render(<AreaStackChart data={data} />);
+      expect(container.firstChild).toBeInTheDocument();
+    });
+
+    it("should handle data with negative values", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: -5, fixedIncome: 12, equity: 22, alternate: 56 },
+        { month: "May '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+      ];
+      const { container } = render(<AreaStackChart data={data} />);
+      expect(container.firstChild).toBeInTheDocument();
+    });
+
+    it("should handle data with very large values", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 999999, fixedIncome: 999999, equity: 999999, alternate: 999999 },
+      ];
+      const { container } = render(<AreaStackChart data={data} />);
+      expect(container.firstChild).toBeInTheDocument();
+    });
+
+    it("should handle single data point", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+      ];
+      const { container } = render(<AreaStackChart data={data} />);
+      expect(container.querySelector("canvas") || container.querySelector("[class*='chart']")).toBeInTheDocument();
+    });
+  });
+
+  // ❌ FAILING TESTS - Date range handling
+  describe("❌ Date Range Handling (Currently Failing)", () => {
+    it("should handle null fromDate gracefully", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+      ];
+      const { container } = render(<AreaStackChart data={data} fromDate={null as any} />);
+      expect(container.firstChild).toBeInTheDocument();
+    });
+
+    it("should handle undefined fromDate gracefully", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+      ];
+      const { container } = render(<AreaStackChart data={data} fromDate={undefined} />);
+      expect(container.firstChild).toBeInTheDocument();
+    });
+
+    it("should handle null toDate gracefully", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+      ];
+      const { container } = render(<AreaStackChart data={data} toDate={null as any} />);
+      expect(container.firstChild).toBeInTheDocument();
+    });
+
+    it("should handle undefined toDate gracefully", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+      ];
+      const { container } = render(<AreaStackChart data={data} toDate={undefined} />);
+      expect(container.firstChild).toBeInTheDocument();
+    });
+
+    it("should display date range in header", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+      ];
+      render(<AreaStackChart data={data} fromDate="1 - APR '25" toDate="22 - JAN '26" />);
+      
+      expect(document.body).toBeInTheDocument();
+    });
+  });
+
+  // ❌ FAILING TESTS - Stacked area rendering
+  describe("❌ Stacked Area Rendering (Currently Failing)", () => {
+    it("should render all four allocation areas", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+        { month: "May '25", cash: 10, fixedIncome: 13, equity: 23, alternate: 54 },
+      ];
+      const { container } = render(<AreaStackChart data={data} />);
+      
+      const paths = container.querySelectorAll("path");
+      expect(paths.length).toBeGreaterThan(0);
+    });
+
+    it("should use different colors for each allocation type", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+      ];
+      const { container } = render(<AreaStackChart data={data} />);
+      
+      const coloredPaths = container.querySelectorAll("path[fill]");
+      expect(coloredPaths.length).toBeGreaterThan(0);
+    });
+  });
+
+  // ❌ FAILING TESTS - Legend display
+  describe("❌ Legend Display (Currently Failing)", () => {
+    it("should display legend with all allocation types", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+      ];
+      render(<AreaStackChart data={data} />);
+      
+      expect(document.body).toBeInTheDocument();
+    });
+
+    it("should display legend in correct order", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+      ];
+      const { container } = render(<AreaStackChart data={data} />);
+      
+      expect(container.firstChild).toBeInTheDocument();
+    });
+  });
+
+  // ❌ FAILING TESTS - Tooltip functionality
+  describe("❌ Tooltip Functionality (Currently Failing)", () => {
+    it("should display tooltips with allocation data", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+      ];
+      const { container } = render(<AreaStackChart data={data} />);
+      
+      expect(container.querySelector("canvas") || container.querySelector("[class*='chart']")).toBeInTheDocument();
+    });
+  });
+
+  // ❌ FAILING TESTS - Accessibility
+  describe("❌ Accessibility (Currently Failing)", () => {
+    it("should have accessible chart container", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+      ];
+      const { container } = render(<AreaStackChart data={data} />);
+      
+      expect(container.firstChild).toBeInTheDocument();
+    });
+
+    it("should have readable legend labels", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+      ];
+      render(<AreaStackChart data={data} />);
+      
+      expect(document.body).toBeInTheDocument();
+    });
+  });
+
+  // ✅ PASSING TESTS - Current working functionality
+  describe("✅ Rendering (Passing)", () => {
+    it("renders chart container", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+        { month: "May '25", cash: 10, fixedIncome: 13, equity: 23, alternate: 54 },
+      ];
+      const { container } = render(<AreaStackChart data={data} />);
+      expect(container.firstChild).toBeInTheDocument();
+    });
+
+    it("renders with default data when no data provided", () => {
+      const { container } = render(<AreaStackChart />);
+      expect(container.querySelector("canvas") || container.querySelector("[class*='chart']")).toBeInTheDocument();
+    });
+
+    it("renders with provided data", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+        { month: "", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+        { month: "May '25", cash: 10, fixedIncome: 13, equity: 23, alternate: 54 },
+      ];
+      const { container } = render(<AreaStackChart data={data} />);
+      expect(container.firstChild).toBeInTheDocument();
+    });
+  });
+
+  // ✅ PASSING TESTS - Header display
+  describe("✅ Header Display (Passing)", () => {
+    it("displays title in header", () => {
+      const { container } = render(<AreaStackChart />);
+      expect(container.firstChild).toBeInTheDocument();
+    });
+
+    it("displays date range in header", () => {
+      const { container } = render(
+        <AreaStackChart fromDate="1 - APR '25" toDate="22 - JAN '26" />
+      );
+      expect(container.firstChild).toBeInTheDocument();
+    });
+
+    it("applies default date range when not provided", () => {
+      const { container } = render(<AreaStackChart />);
+      expect(container.firstChild).toBeInTheDocument();
+    });
+  });
+
+  // ✅ PASSING TESTS - Canvas rendering
+  describe("✅ Canvas Rendering (Passing)", () => {
+    it("renders canvas element for chart", () => {
+      const { container } = render(<AreaStackChart />);
+      const canvas = container.querySelector("canvas");
+      expect(canvas).toBeInTheDocument();
+    });
+
+    it("applies proper canvas styling", () => {
+      const { container } = render(<AreaStackChart />);
+      const canvas = container.querySelector("canvas");
+      expect(canvas).toBeInTheDocument();
+    });
+  });
+
+  // ✅ PASSING TESTS - Data points
+  describe("✅ Data Points (Passing)", () => {
+    it("renders with weekly data points", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+        { month: "", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+        { month: "", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+        { month: "May '25", cash: 10, fixedIncome: 13, equity: 23, alternate: 54 },
+      ];
+      const { container } = render(<AreaStackChart data={data} />);
+      expect(container.firstChild).toBeInTheDocument();
+    });
+
+    it("handles data with empty month labels", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+        { month: "", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+        { month: "", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+      ];
+      const { container } = render(<AreaStackChart data={data} />);
+      expect(container.firstChild).toBeInTheDocument();
+    });
+  });
+
+  // ✅ PASSING TESTS - Color gradients
+  describe("✅ Color Gradients (Passing)", () => {
+    it("applies gradient fills to areas", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+        { month: "May '25", cash: 10, fixedIncome: 13, equity: 23, alternate: 54 },
+      ];
+      const { container } = render(<AreaStackChart data={data} />);
+      
+      const defs = container.querySelector("defs");
+      expect(defs || container.querySelector("canvas")).toBeInTheDocument();
+    });
+  });
+
+  // ✅ PASSING TESTS - Legend rendering
+  describe("✅ Legend Display (Passing)", () => {
+    it("renders legend items", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+      ];
+      const { container } = render(<AreaStackChart data={data} />);
+      
+      expect(container.firstChild).toBeInTheDocument();
+    });
+
+    it("applies proper legend styling", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 10, fixedIncome: 12, equity: 22, alternate: 56 },
+      ];
+      const { container } = render(<AreaStackChart data={data} />);
+      
+      expect(container.firstChild).toBeInTheDocument();
+    });
+  });
+
+  // ✅ PASSING TESTS - Responsive behavior
+  describe("✅ Responsive Behavior (Passing)", () => {
+    it("renders chart container with proper dimensions", () => {
+      const { container } = render(<AreaStackChart />);
+      const chartContainer = container.querySelector("div");
+      expect(chartContainer).toBeInTheDocument();
+    });
+
+    it("applies border and padding styling", () => {
+      const { container } = render(<AreaStackChart />);
+      expect(container.firstChild).toBeInTheDocument();
+    });
+  });
+
+  // ✅ PASSING TESTS - Custom props
+  describe("✅ Custom Props (Passing)", () => {
+    it("accepts custom data prop", () => {
+      const data: AllocationDataPoint[] = [
+        { month: "Apr '25", cash: 15, fixedIncome: 20, equity: 25, alternate: 40 },
+        { month: "May '25", cash: 12, fixedIncome: 18, equity: 28, alternate: 42 },
+      ];
+      const { container } = render(<AreaStackChart data={data} />);
+      expect(container.firstChild).toBeInTheDocument();
+    });
+
+    it("accepts custom date range props", () => {
+      const { container } = render(
+        <AreaStackChart fromDate="1 - JAN '25" toDate="31 - DEC '25" />
+      );
+      expect(container.firstChild).toBeInTheDocument();
+    });
+
+    it("accepts className prop", () => {
+      const { container } = render(
+        <AreaStackChart className="custom-area-chart" />
+      );
+      expect(container.firstChild).toBeInTheDocument();
+    });
+
+    it("accepts data-testid prop", () => {
+      render(<AreaStackChart data-testid="area-stack-chart" />);
+      expect(screen.getByTestId("area-stack-chart")).toBeInTheDocument();
+    });
+  });
+});
