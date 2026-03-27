@@ -2,7 +2,7 @@
 import { FilterBreadcrumb } from "@/components/shared/FilterBreadcrumb";
 import { BreadcrumbItem } from "@/components/shared/FilterBreadcrumb";
 import { RefreshCcwIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 
 export default function FilterBar({
   items,

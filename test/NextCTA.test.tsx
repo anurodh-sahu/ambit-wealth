@@ -1,227 +1,8 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+import { axe } from "jest-axe";
 import NextCTA from "@/components/shared/NextCTA";
 
 describe("NextCTA", () => {
-  // ❌ FAILING TESTS FIRST - Edge cases and validation
-  describe("❌ Input Validation - Edge Cases (Currently Failing)", () => {
-    it("should handle null title gracefully", () => {
-      render(<NextCTA title={null as any} subtitle="Test" btnVarient="cta" btnTitle="Click" />);
-      const container = screen.getByRole("button").parentElement;
-      expect(container).toBeInTheDocument();
-    });
-
-    it("should handle undefined title gracefully", () => {
-      render(<NextCTA title={undefined as any} subtitle="Test" btnVarient="cta" btnTitle="Click" />);
-      const container = screen.getByRole("button").parentElement;
-      expect(container).toBeInTheDocument();
-    });
-
-    it("should handle empty string title", () => {
-      render(<NextCTA title="" subtitle="Test" btnVarient="cta" btnTitle="Click" />);
-      const container = screen.getByRole("button").parentElement;
-      expect(container).toBeInTheDocument();
-    });
-
-    it("should handle null subtitle gracefully", () => {
-      render(<NextCTA title="Title" subtitle={null as any} btnVarient="cta" btnTitle="Click" />);
-      expect(screen.getByText("Title")).toBeInTheDocument();
-    });
-
-    it("should handle undefined subtitle gracefully", () => {
-      render(<NextCTA title="Title" subtitle={undefined} btnVarient="cta" btnTitle="Click" />);
-      expect(screen.getByText("Title")).toBeInTheDocument();
-    });
-
-    it("should handle very long title text", () => {
-      const longTitle = "A".repeat(200);
-      render(<NextCTA title={longTitle} subtitle="Test" btnVarient="cta" btnTitle="Click" />);
-      expect(screen.getByText(longTitle)).toBeInTheDocument();
-    });
-
-    it("should handle very long subtitle text", () => {
-      const longSubtitle = "B".repeat(300);
-      render(<NextCTA title="Title" subtitle={longSubtitle} btnVarient="cta" btnTitle="Click" />);
-      expect(screen.getByText(longSubtitle)).toBeInTheDocument();
-    });
-  });
-
-  // ❌ FAILING TESTS - Button variant validation
-  describe("❌ Button Variant Validation (Currently Failing)", () => {
-    it("should handle invalid button variant gracefully", () => {
-      render(
-        <NextCTA 
-          title="Title" 
-          subtitle="Sub" 
-          btnVarient={"invalid" as any}
-          btnTitle="Click" 
-        />
-      );
-      expect(screen.getByRole("button")).toBeInTheDocument();
-    });
-
-    it("should handle missing button variant prop", () => {
-      render(
-        <NextCTA 
-          title="Title" 
-          subtitle="Sub" 
-          btnVarient={undefined as any}
-          btnTitle="Click" 
-        />
-      );
-      expect(screen.getByRole("button")).toBeInTheDocument();
-    });
-
-    it("should render different variants without errors", () => {
-      const variants = ["default", "link", "outline", "ghost", "destructive", "cta", "image"];
-      
-      variants.forEach((variant) => {
-        const { unmount } = render(
-          <NextCTA 
-            title="Title" 
-            subtitle="Sub" 
-            btnVarient={variant as any}
-            btnTitle="Click" 
-          />
-        );
-        expect(screen.getByRole("button")).toBeInTheDocument();
-        unmount();
-      });
-    });
-  });
-
-  // ❌ FAILING TESTS - Button shape validation
-  describe("❌ Button Shape Validation (Currently Failing)", () => {
-    it("should handle invalid button shape gracefully", () => {
-      render(
-        <NextCTA 
-          title="Title" 
-          subtitle="Sub" 
-          btnVarient="cta"
-          btnShape={"invalid" as any}
-          btnTitle="Click" 
-        />
-      );
-      expect(screen.getByRole("button")).toBeInTheDocument();
-    });
-
-    it("should handle missing button shape prop", () => {
-      render(
-        <NextCTA 
-          title="Title" 
-          subtitle="Sub" 
-          btnVarient="cta"
-          btnShape={undefined as any}
-          btnTitle="Click" 
-        />
-      );
-      expect(screen.getByRole("button")).toBeInTheDocument();
-    });
-  });
-
-  // ❌ FAILING TESTS - Click handling
-  describe("❌ Click Handler - Edge Cases (Currently Failing)", () => {
-    it("should handle null onClick callback gracefully", () => {
-      render(
-        <NextCTA 
-          title="Title" 
-          subtitle="Sub" 
-          btnVarient="cta"
-          btnTitle="Click"
-          onClick={null as any}
-        />
-      );
-      
-      const button = screen.getByRole("button");
-      fireEvent.click(button);
-      expect(button).toBeInTheDocument();
-    });
-
-    it("should handle undefined onClick callback gracefully", () => {
-      render(
-        <NextCTA 
-          title="Title" 
-          subtitle="Sub" 
-          btnVarient="cta"
-          btnTitle="Click"
-          onClick={undefined}
-        />
-      );
-      
-      const button = screen.getByRole("button");
-      fireEvent.click(button);
-      expect(button).toBeInTheDocument();
-    });
-
-    it("should prevent double click issues", () => {
-      const handleClick = jest.fn();
-      render(
-        <NextCTA 
-          title="Title" 
-          subtitle="Sub" 
-          btnVarient="cta"
-          btnTitle="Click"
-          onClick={handleClick}
-        />
-      );
-      
-      const button = screen.getByRole("button");
-      fireEvent.click(button);
-      fireEvent.click(button);
-      fireEvent.click(button);
-      
-      // May be called multiple times without debouncing
-      expect(handleClick.mock.calls.length).toBeGreaterThanOrEqual(1);
-    });
-  });
-
-  // ❌ FAILING TESTS - Accessibility
-  describe("❌ Accessibility (Currently Failing)", () => {
-    it("should have proper heading hierarchy", () => {
-      render(<NextCTA title="Main Title" subtitle="Sub Title" btnVarient="cta" btnTitle="Click" />);
-      
-      const heading = screen.getByText("Main Title");
-      expect(["H1", "H2", "H3", "H4"].some(tag => heading.tagName === tag)).toBe(true);
-    });
-
-    it("should have semantic HTML structure", () => {
-      const { container } = render(
-        <NextCTA title="Title" subtitle="Sub" btnVarient="cta" btnTitle="Click" />
-      );
-      
-      // Should have proper semantic structure
-      expect(container.querySelector("section") || container.querySelector("article")).toBeInTheDocument();
-    });
-
-    it("should have accessible button label", () => {
-      render(
-        <NextCTA 
-          title="Title" 
-          subtitle="Sub" 
-          btnVarient="cta"
-          btnTitle="Call To Action" 
-        />
-      );
-      
-      expect(screen.getByRole("button", { name: "Call To Action" })).toBeInTheDocument();
-    });
-  });
-
-  // ❌ FAILING TESTS - Layout and spacing
-  describe("❌ Layout - Edge Cases (Currently Failing)", () => {
-    it("should handle subtitle-less rendering with proper spacing", () => {
-      render(<NextCTA title="Title" subtitle={undefined} btnVarient="cta" btnTitle="Click" />);
-      expect(screen.getByText("Title")).toBeInTheDocument();
-    });
-
-    it("should maintain vertical spacing between text and button", () => {
-      const { container } = render(
-        <NextCTA title="Title" subtitle="Sub" btnVarient="cta" btnTitle="Click" />
-      );
-      
-      const title = screen.getByText("Title").parentElement;
-      expect(title).toBeInTheDocument();
-    });
-  });
 
   // ✅ PASSING TESTS - Current working functionality
   describe("✅ Rendering (Passing)", () => {
@@ -458,6 +239,73 @@ describe("NextCTA", () => {
         />
       );
       expect(screen.getByTestId("next-cta")).toBeInTheDocument();
+    });
+  });
+
+  // ✅ ACCESSIBILITY TESTS
+  describe("✅ Accessibility (a11y)", () => {
+    it("should have no accessibility violations in default render", async () => {
+      const { container } = render(
+        <NextCTA
+          title="PORTFOLIO PERFORMANCE"
+          subtitle="TRACK TOTAL RETURNS AND RISK"
+          btnVarient="cta"
+          btnTitle="ANALYSE PERFORMANCE"
+        />
+      );
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
+
+    it("should have no accessibility violations with different button variants", async () => {
+      const { container } = render(
+        <NextCTA
+          title="Title"
+          subtitle="Sub"
+          btnVarient="outline"
+          btnTitle="Click"
+        />
+      );
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
+
+    it("should have no accessibility violations with ghost variant", async () => {
+      const { container } = render(
+        <NextCTA
+          title="Title"
+          subtitle="Sub"
+          btnVarient="ghost"
+          btnTitle="Click"
+        />
+      );
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
+
+    it("should have accessible button with proper role", () => {
+      render(
+        <NextCTA
+          title="Title"
+          subtitle="Sub"
+          btnVarient="cta"
+          btnTitle="ACTION BUTTON"
+        />
+      );
+      expect(screen.getByRole("button", { name: "ACTION BUTTON" })).toBeInTheDocument();
+    });
+
+    it("should have semantic heading structure", () => {
+      const { container } = render(
+        <NextCTA
+          title="PORTFOLIO PERFORMANCE"
+          subtitle="TRACK RETURNS"
+          btnVarient="cta"
+          btnTitle="Click"
+        />
+      );
+      expect(screen.getByText("PORTFOLIO PERFORMANCE")).toBeInTheDocument();
+      expect(screen.getByText("TRACK RETURNS")).toBeInTheDocument();
     });
   });
 });

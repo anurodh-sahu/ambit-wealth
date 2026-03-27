@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Logo from "@/components/shared/Logo";
-import { Button } from "../ui/button";
+import { Button } from "../ui/Button";
 import ProfileMenu from "@/components/shared/ProfileMenu";
 import { usePathname } from "next/navigation";
 
