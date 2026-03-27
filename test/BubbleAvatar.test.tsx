@@ -1,199 +1,218 @@
 import { render, screen } from "@testing-library/react";
 import { BubbleAvatar } from "@/components/shared/BubbleAvatar";
 
-describe("BubbleAvatar Component - BDD Tests", () => {
-  describe("Initials Generation", () => {
-    describe("Given a full name with first and last name", () => {
-      it("When component renders, Then it should display initials from first and last name", () => {
-        // Given
-        const name = "John Doe";
-
-        // When
-        render(<BubbleAvatar name={name} />);
-
-        // Then
-        expect(screen.getByText("JD")).toBeInTheDocument();
-      });
+describe("BubbleAvatar", () => {
+  // ❌ FAILING TESTS FIRST - Edge cases and error handling (not yet implemented)
+  describe("❌ Initials Generation - Edge Cases (Currently Failing)", () => {
+    it("should handle null name gracefully", () => {
+      const { container } = render(<BubbleAvatar name={null as any} />);
+      expect(container.querySelector('[class*="rounded-full"]')).toBeInTheDocument();
     });
 
-    describe("Given a single name", () => {
-      it("When component renders, Then it should display initial from the single name", () => {
-        // Given
-        const name = "Alice";
-
-        // When
-        render(<BubbleAvatar name={name} />);
-
-        // Then
-        expect(screen.getByText("A")).toBeInTheDocument();
-      });
+    it("should handle undefined name gracefully", () => {
+      const { container } = render(<BubbleAvatar name={undefined as any} />);
+      expect(container.querySelector('[class*="rounded-full"]')).toBeInTheDocument();
     });
 
-    describe("Given a three-part name", () => {
-      it("When component renders, Then it should display initials from first and last name only", () => {
-        // Given
-        const name = "Mary Jane Watson";
-
-        // When
-        render(<BubbleAvatar name={name} />);
-
-        // Then
-        expect(screen.getByText("MW")).toBeInTheDocument();
-      });
+    it("should display fallback avatar when name contains only numbers", () => {
+      render(<BubbleAvatar name="12345" />);
+      // Should handle gracefully instead of showing "11"
+      expect(screen.queryByText("11")).not.toBeInTheDocument();
     });
 
-    describe("Given a name with extra spaces", () => {
-      it("When component renders, Then it should handle extra spaces correctly", () => {
-        // Given
-        const name = "  Peter   Parker  ";
-
-        // When
-        render(<BubbleAvatar name={name} />);
-
-        // Then
-        expect(screen.getByText("PP")).toBeInTheDocument();
-      });
+    it("should generate consistent color for same name across renders", () => {
+      const { rerender } = render(<BubbleAvatar name="John Doe" />);
+      const color1 = document.querySelector('[class*="rounded-full"]')?.className;
+      
+      rerender(<BubbleAvatar name="John Doe" />);
+      const color2 = document.querySelector('[class*="rounded-full"]')?.className;
+      
+      expect(color1).toBe(color2);
     });
 
-    describe("Given an empty name string", () => {
-      it("When component renders, Then it should display empty string", () => {
-        // Given
-        const name = "";
-
-        // When
-        const { container } = render(<BubbleAvatar name={name} />);
-
-        // Then
-        const avatar = container.querySelector('[class*="rounded-full"]');
-        expect(avatar?.textContent).toBe("");
-      });
+    it("should NOT display initials if name contains only special characters", () => {
+      render(<BubbleAvatar name="@#$%" />);
+      expect(screen.queryByText("@@")).not.toBeInTheDocument();
     });
   });
 
-  describe("Size Variants", () => {
-    describe("Given different size props", () => {
-      it("When size is 'sm', Then it should have small size classes", () => {
-        // Given & When
-        const { container } = render(
-          <BubbleAvatar name="John Doe" size="sm" />
-        );
-        const avatar = container.firstChild;
-
-        // Then
-        expect(avatar).toHaveClass("h-6", "w-6", "text-xs");
-      });
-
-      it("When size is 'md', Then it should have medium size classes", () => {
-        // Given & When
-        const { container } = render(
-          <BubbleAvatar name="John Doe" size="md" />
-        );
-        const avatar = container.firstChild;
-
-        // Then
-        expect(avatar).toHaveClass("h-8", "w-8", "text-sm");
-      });
-
-      it("When size is 'lg', Then it should have large size classes", () => {
-        // Given & When
-        const { container } = render(
-          <BubbleAvatar name="John Doe" size="lg" />
-        );
-        const avatar = container.firstChild;
-
-        // Then
-        expect(avatar).toHaveClass("h-10", "w-10", "text-base");
-      });
-
-      it("When size is 'xl', Then it should have extra large size classes", () => {
-        // Given & When
-        const { container } = render(
-          <BubbleAvatar name="John Doe" size="xl" />
-        );
-        const avatar = container.firstChild;
-
-        // Then
-        expect(avatar).toHaveClass("h-14", "w-14", "text-lg");
-      });
+  // ❌ FAILING TESTS - Invalid size prop handling
+  describe("❌ Size Variants - Edge Cases (Currently Failing)", () => {
+    it("should fall back to default size when invalid size prop is provided", () => {
+      const { container } = render(
+        <BubbleAvatar name="John Doe" size={"invalid" as any} />
+      );
+      // Should default to md
+      expect(container.firstChild).toHaveClass("h-8", "w-8", "text-sm");
     });
 
-    describe("Given no explicit size prop", () => {
-      it("When component renders, Then it should use default 'md' size", () => {
-        // Given & When
-        const { container } = render(<BubbleAvatar name="John Doe" />);
-        const avatar = container.firstChild;
-
-        // Then
-        expect(avatar).toHaveClass("h-8", "w-8", "text-sm");
-      });
+    it("should handle numeric size values gracefully", () => {
+      const { container } = render(
+        <BubbleAvatar name="John Doe" size={48 as any} />
+      );
+      expect(container.querySelector('[class*="rounded-full"]')).toBeInTheDocument();
     });
   });
 
-  describe("Styling and Appearance", () => {
-    describe("Given a BubbleAvatar component", () => {
-      it("When component renders, Then it should have secondary background color", () => {
-        // Given & When
-        const { container } = render(<BubbleAvatar name="John Doe" />);
-        const avatar = container.firstChild;
+  // ❌ FAILING TESTS - Color theming
+  describe("❌ Styling - Color Variants (Currently Failing)", () => {
+    it("should apply different background colors based on name hash", () => {
+      const { rerender, container: container1 } = render(
+        <BubbleAvatar name="Alice Smith" />
+      );
+      const color1 = getComputedStyle(container1.firstChild as Element).backgroundColor;
 
-        // Then
-        expect(avatar).toHaveClass("bg-secondary", "text-secondary-foreground");
-      });
+      rerender(<BubbleAvatar name="Bob Johnson" />);
+      const container2 = document.querySelector('[class*="rounded-full"]');
+      const color2 = getComputedStyle(container2 as Element).backgroundColor;
 
-      it("When component renders, Then it should have rounded-full class", () => {
-        // Given & When
-        const { container } = render(<BubbleAvatar name="John Doe" />);
-        const avatar = container.firstChild;
+      // Different names should likely have different colors
+      expect(color1).not.toBe(color2);
+    });
 
-        // Then
-        expect(avatar).toHaveClass("rounded-full");
-      });
-
-      it("When component renders, Then it should be centered with flex", () => {
-        // Given & When
-        const { container } = render(<BubbleAvatar name="John Doe" />);
-        const avatar = container.firstChild;
-
-        // Then
-        expect(avatar).toHaveClass("flex", "items-center", "justify-center");
-      });
+    it("should support custom background color prop", () => {
+      const { container } = render(
+        <BubbleAvatar name="John Doe" bgColor="bg-primary" />
+      );
+      expect(container.firstChild).toHaveClass("bg-primary");
     });
   });
 
-  describe("Custom Styling", () => {
-    describe("Given a custom className prop", () => {
-      it("When component renders with custom class, Then it should apply custom styles", () => {
-        // Given & When
-        const { container } = render(
-          <BubbleAvatar name="John Doe" className="custom-class" />
-        );
-        const avatar = container.firstChild;
+  // ❌ FAILING TESTS - Accessibility improvements
+  describe("❌ Accessibility (Currently Failing)", () => {
+    it("should announce initials to screen readers automatically", () => {
+      render(<BubbleAvatar name="John Doe" />);
+      const avatar = screen.getByRole("img", { hidden: true });
+      expect(avatar).toHaveAttribute("aria-label");
+      expect(avatar.getAttribute("aria-label")).toContain("JD");
+    });
 
-        // Then
-        expect(avatar).toHaveClass("custom-class");
-      });
+    it("should have proper role attribute", () => {
+      const { container } = render(<BubbleAvatar name="John Doe" />);
+      expect(container.firstChild).toHaveAttribute("role", "img");
+    });
+
+    it("should provide helpful aria-description", () => {
+      render(
+        <BubbleAvatar
+          name="John Doe"
+          aria-description="Avatar for John Doe"
+        />
+      );
+      const avatar = document.querySelector('[aria-description]');
+      expect(avatar).toBeInTheDocument();
     });
   });
 
-  describe("HTML Attributes", () => {
-    describe("Given HTML attributes", () => {
-      it("When component renders with data attributes, Then it should support them", () => {
-        // Given & When
-        const { container } = render(
-          <BubbleAvatar name="John Doe" data-testid="custom-avatar" />
-        );
+  // ✅ PASSING TESTS - Current working functionality
+  describe("✅ Initials Generation (Passing)", () => {
+    it("generates initials from first and last name", () => {
+      render(<BubbleAvatar name="John Doe" />);
+      expect(screen.getByText("JD")).toBeInTheDocument();
+    });
 
-        // Then
-        expect(screen.getByTestId("custom-avatar")).toBeInTheDocument();
-      });
+    it("generates initial from single name", () => {
+      render(<BubbleAvatar name="Alice" />);
+      expect(screen.getByText("A")).toBeInTheDocument();
+    });
 
-      it("When component renders with aria-label, Then it should support accessibility attributes", () => {
-        // Given & When
-        render(<BubbleAvatar name="John Doe" aria-label="User Avatar" />);
+    it("generates initials from first and last name in three-part name", () => {
+      render(<BubbleAvatar name="Mary Jane Watson" />);
+      expect(screen.getByText("MW")).toBeInTheDocument();
+    });
 
-        // Then
-        expect(screen.getByLabelText("User Avatar")).toBeInTheDocument();
-      });
+    it("handles names with extra spaces", () => {
+      render(<BubbleAvatar name="  Peter   Parker  " />);
+      expect(screen.getByText("PP")).toBeInTheDocument();
+    });
+
+    it("renders empty string for empty name", () => {
+      const { container } = render(<BubbleAvatar name="" />);
+      const avatar = container.querySelector('[class*="rounded-full"]');
+      expect(avatar?.textContent).toBe("");
+    });
+  });
+
+  // ✅ PASSING TESTS - Size variants
+  describe("✅ Size Variants (Passing)", () => {
+    it("applies small size classes when size is sm", () => {
+      const { container } = render(
+        <BubbleAvatar name="John Doe" size="sm" />
+      );
+      expect(container.firstChild).toHaveClass("h-6", "w-6", "text-xs");
+    });
+
+    it("applies medium size classes when size is md", () => {
+      const { container } = render(
+        <BubbleAvatar name="John Doe" size="md" />
+      );
+      expect(container.firstChild).toHaveClass("h-8", "w-8", "text-sm");
+    });
+
+    it("applies large size classes when size is lg", () => {
+      const { container } = render(
+        <BubbleAvatar name="John Doe" size="lg" />
+      );
+      expect(container.firstChild).toHaveClass("h-10", "w-10", "text-base");
+    });
+
+    it("applies extra large size classes when size is xl", () => {
+      const { container } = render(
+        <BubbleAvatar name="John Doe" size="xl" />
+      );
+      expect(container.firstChild).toHaveClass("h-14", "w-14", "text-lg");
+    });
+
+    it("uses default md size when size prop is not provided", () => {
+      const { container } = render(<BubbleAvatar name="John Doe" />);
+      expect(container.firstChild).toHaveClass("h-8", "w-8", "text-sm");
+    });
+  });
+
+  // ✅ PASSING TESTS - Styling
+  describe("✅ Styling (Passing)", () => {
+    it("applies secondary background and text color", () => {
+      const { container } = render(<BubbleAvatar name="John Doe" />);
+      expect(container.firstChild).toHaveClass(
+        "bg-secondary",
+        "text-secondary-foreground"
+      );
+    });
+
+    it("applies rounded-full class", () => {
+      const { container } = render(<BubbleAvatar name="John Doe" />);
+      expect(container.firstChild).toHaveClass("rounded-full");
+    });
+
+    it("applies flex centering classes", () => {
+      const { container } = render(<BubbleAvatar name="John Doe" />);
+      expect(container.firstChild).toHaveClass(
+        "flex",
+        "items-center",
+        "justify-center"
+      );
+    });
+
+    it("applies custom className", () => {
+      const { container } = render(
+        <BubbleAvatar name="John Doe" className="custom-class" />
+      );
+      expect(container.firstChild).toHaveClass("custom-class");
+    });
+  });
+
+  // ✅ PASSING TESTS - HTML attributes
+  describe("✅ HTML Attributes (Passing)", () => {
+    it("supports data-testid attribute", () => {
+      render(
+        <BubbleAvatar name="John Doe" data-testid="custom-avatar" />
+      );
+      expect(screen.getByTestId("custom-avatar")).toBeInTheDocument();
+    });
+
+    it("supports aria-label for accessibility", () => {
+      render(<BubbleAvatar name="John Doe" aria-label="User Avatar" />);
+      expect(screen.getByLabelText("User Avatar")).toBeInTheDocument();
     });
   });
 });

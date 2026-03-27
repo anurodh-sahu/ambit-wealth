@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import LoginForm from "@/features/auth/components/LoginForm";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button-custom";
 import { useLogin } from "../hooks/useLogin";
 import { useAuth } from "@/store/features/auth/authHook";
 import { cn } from "@/lib/utils";

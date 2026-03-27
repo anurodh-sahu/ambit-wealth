@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import LineStackChart from "@/components/shared/charts/line/LineStackChart";
 import { KPICardProps } from "@/components/shared/KPICard";
 import { useDashboard } from "@/features/dashboard/hooks/useDashboard";
@@ -7,6 +10,12 @@ import ProgressCardGrid from "@/components/shared/ProgressCardGrid";
 import DateFilterBar from "@/components/shared/DateFilterBar";
 import WelcomeSection from "./WelcomeSection";
 import TitleBar from "@/components/shared/TitleBar";
+
+import ProgressCard from "@/components/shared/ProgressCard";
+import NextCTA from "@/components/shared/NextCTA";
+import { Mail, FileText, Phone, CreditCard, AlertCircle } from "lucide-react";
+import { ProfileTabs } from "@/components/shared/ProfileTabs";
+
 
 const kpiData: KPICardProps[] = [
   {
@@ -42,6 +51,7 @@ const skeletonCount = 6;
 const kpiSkeletonCount = 4;
 export default function Main() {
   const { loading, data, error } = useDashboard();
+  const [activeProfileTab, setActiveProfileTab] = useState("personal");
   if (error) return <div>Error: {error} </div>;
   return (
     <div className="flex flex-col gap-[123px]">
@@ -143,6 +153,87 @@ export default function Main() {
           </div>
         </div>
       </div>
+
+      <div className="mt-10">
+        <ProfileTabs
+          activeTabId={activeProfileTab}
+          mobileBreakpoint={640}
+          onTabChange={setActiveProfileTab}
+          tabs={[
+            {
+              fields: [
+                {
+                  icon: <Mail size={22} strokeWidth={1.5}/>,
+                  label: 'E-mail',
+                  value: 'sh*****@****.com'
+                },
+                {
+                  icon: <FileText size={22} strokeWidth={1.5}/>,
+                  label: 'PAN',
+                  value: '*****161Q'
+                },
+                {
+                  icon: <Phone size={22} strokeWidth={1.5}/>,
+                  label: 'Mobile',
+                  value: '+91 ***** *6353'
+                }
+              ],
+              id: 'personal',
+              label: 'PERSONAL'
+            },
+            {
+              fields: [
+                {
+                  label: 'Demat ID',
+                  value: '165668733571761386'
+                },
+                {
+                  label: 'DP ID',
+                  value: '11263739'
+                },
+                {
+                  label: 'BO ID',
+                  value: '11263739'
+                },
+                {
+                  label: 'Depository Participant',
+                  value: 'Ambit Broking LTD'
+                }
+              ],
+              id: 'demat',
+              label: 'DEMAT'
+            },
+            {
+              fields: [
+                {
+                  icon: <CreditCard size={22} strokeWidth={1.5}/>,
+                  label: 'Account Number',
+                  value: '***** 3287872'
+                },
+                {
+                  label: 'Bank',
+                  value: 'HDFC Bank LTD'
+                },
+                {
+                  label: 'Branch',
+                  value: 'Kamala Mills Compound, Lower, Parel'
+                }
+              ],
+              id: 'bank',
+              label: 'BANK'
+            }
+          ]}
+        />
+      </div>
+
+
+      <div className="mt-10">
+        <NextCTA title="PORTFOLIO PERFORMANCE" subtitle="TRACK TOTAL RETURNS AND RISK OVER TIME. COMPARE WITH YOUR BENCHMARK." btnTitle="ANALYSE PERFORMANCE" btnVarient="cta" btnShape="default" onClick={function (): void {
+          throw new Error("Function not implemented.");
+        } } />
+      </div>
+
+
     </div>
   );
 }
