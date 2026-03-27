@@ -1,5 +1,5 @@
 import { PercentIcon, IndianRupee } from "lucide-react";
-import { Button } from "../ui/Button";
+import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 
 export default function PercentCurrencySwitcher({
