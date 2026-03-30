@@ -13,18 +13,28 @@ import WelcomeSection from "./WelcomeSection";
 import TitleBar from "@/components/shared/TitleBar";
 import LineChart from "@/components/shared/highcharts/line/LineChart";
 import PieChart from "@/components/shared/highcharts/pie/PieChart";
-import ProgressCard from "@/components/shared/ProgressCard";
+import ProgressCard, {
+  ProgressCardProps,
+} from "@/components/shared/ProgressCard";
 import NextCTA from "@/components/shared/NextCTA";
 import { Mail, FileText, Phone, CreditCard, AlertCircle } from "lucide-react";
 import { ProfileTabs } from "@/components/shared/ProfileTabs";
-
+import { getAssetClassColor, roundToTwoDecimals } from "@/lib/utils";
 const skeletonCount = 6;
 const kpiSkeletonCount = 4;
 export default function Main() {
   const { isLoading, data, error } = useDashboard();
   const [activeProfileTab, setActiveProfileTab] = useState("personal");
   if (error) return <div>Error: {error} </div>;
-  console.log("data --", data?.portfolioMovement);
+  const totalPortfolioValue = data?.investmentSummary.reduce(
+    (acc: number, item: ProgressCardProps) => acc + item.currentValue,
+    0
+  );
+  const pieChartData = data?.investmentSummary.map((item) => ({
+    color: getAssetClassColor(item.assetClass),
+    name: item.assetClass,
+    value: roundToTwoDecimals((item.currentValue * 100) / totalPortfolioValue),
+  }));
   return (
     <div className="flex flex-col gap-[123px]">
       <div className="flex flex-col gap-3">
@@ -72,29 +82,9 @@ export default function Main() {
               isScale={false}
             >
               <PieChart
-                collapseLegendAfter={5}
-                data={[
-                  {
-                    color: "#a89850",
-                    name: "Equity",
-                    value: 40,
-                  },
-                  {
-                    color: "#4a8e6e",
-                    name: "Fixed Income",
-                    value: 30,
-                  },
-                  {
-                    color: "#5a9ba0",
-                    name: "Alternate",
-                    value: 20,
-                  },
-                  {
-                    color: "#2e4e65",
-                    name: "Cash",
-                    value: 10,
-                  },
-                ]}
+                collapseLegendAfter={6}
+                data={pieChartData ?? []}
+                innerSize="55%"
                 onSelect={() => {}}
                 title="Portfolio Allocation"
                 tooltipSuffix="%"
