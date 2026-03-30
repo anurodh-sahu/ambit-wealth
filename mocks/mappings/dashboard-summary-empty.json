@@ -1,0 +1,25 @@
+{
+    "priority":  3,
+    "request":  {
+                    "method":  "GET",
+                    "urlPath":  "/api/v1/dashboard/summary",
+                    "headers":  {
+                                    "profileType":  {
+                                                        "matches":  ".+"
+                                                    },
+                                    "profileId":  {
+                                                      "matches":  ".+"
+                                                  },
+                                    "clientId":  {
+                                                     "equalTo":  "EMPTY001"
+                                                 }
+                                }
+                },
+    "response":  {
+                     "status":  200,
+                     "bodyFileName":  "dashboard-empty.json",
+                     "headers":  {
+                                     "Content-Type":  "application/json"
+                                 }
+                 }
+}

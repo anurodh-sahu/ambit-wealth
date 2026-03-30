@@ -1,0 +1,25 @@
+{
+    "priority":  20,
+    "request":  {
+                    "method":  "GET",
+                    "headers":  {
+                                    "profileType":  {
+                                                        "matches":  ".+"
+                                                    },
+                                    "profileId":  {
+                                                      "matches":  ".+"
+                                                  },
+                                    "clientId":  {
+                                                     "matches":  ".+"
+                                                 }
+                                },
+                    "urlPathPattern":  "/api/v1/reports/download/[A-Za-z0-9\\-]+"
+                },
+    "response":  {
+                     "status":  200,
+                     "bodyFileName":  "reports-download-default-body.json",
+                     "headers":  {
+                                     "Content-Type":  "application/json"
+                                 }
+                 }
+}

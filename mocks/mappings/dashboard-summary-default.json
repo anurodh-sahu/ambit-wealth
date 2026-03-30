@@ -1,0 +1,30 @@
+{
+  "priority": 10,
+  "request": {
+    "method": "GET",
+    "urlPath": "/api/v1/dashboard/summary",
+    "queryParameters": {
+      "timeFilter": {
+        "absent": true
+      }
+    },
+    "headers": {
+      "clientId": {
+        "matches": ".+"
+      },
+      "profileId": {
+        "matches": ".+"
+      },
+      "profileType": {
+        "matches": ".+"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "dashboard.json",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

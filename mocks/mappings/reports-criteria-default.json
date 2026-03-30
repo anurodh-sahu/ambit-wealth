@@ -1,0 +1,44 @@
+{
+    "advancedFilters": [
+        {
+            "defaultValue": "ASSET_CLASS",
+            "name": "groupBy",
+            "options": [
+                "ASSET_CLASS",
+                "PRODUCT",
+                "ACCOUNT"
+            ],
+            "type": "select"
+        },
+        {
+            "defaultValue": "ALL",
+            "name": "account",
+            "options": [
+                "ALL",
+                "ACC1001",
+                "ACC2002"
+            ],
+            "type": "select"
+        }
+    ],
+    "status": "SUCCESS",
+    "basicFilters": [
+        {
+            "defaultValue": "2026-03-24",
+            "name": "asOnDate",
+            "options": [],
+            "type": "date",
+            "required": true
+        },
+        {
+            "defaultValue": "SELF",
+            "name": "scope",
+            "options": [
+                "SELF",
+                "FAMILY"
+            ],
+            "type": "select",
+            "required": true
+        }
+    ]
+}

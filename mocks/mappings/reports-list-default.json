@@ -1,0 +1,27 @@
+{
+    "status": "SUCCESS",
+    "categories": [
+        {
+            "categoryName": "Portfolio",
+            "reports": [
+                {
+                    "reportName": "Portfolio Summary",
+                    "menuId": "RPT1001"
+                },
+                {
+                    "reportName": "Asset Allocation",
+                    "menuId": "RPT1002"
+                }
+            ]
+        },
+        {
+            "categoryName": "Transactions",
+            "reports": [
+                {
+                    "reportName": "Transaction Statement",
+                    "menuId": "RPT2001"
+                }
+            ]
+        }
+    ]
+}

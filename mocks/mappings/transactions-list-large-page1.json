@@ -1,0 +1,33 @@
+{
+    "priority":  10,
+    "request":  {
+                    "method":  "GET",
+                    "urlPath":  "/api/v1/transactions",
+                    "headers":  {
+                                    "profileType":  {
+                                                        "matches":  ".+"
+                                                    },
+                                    "profileId":  {
+                                                      "matches":  ".+"
+                                                  },
+                                    "clientId":  {
+                                                     "matches":  ".+"
+                                                 }
+                                },
+                    "queryParameters":  {
+                                            "page":  {
+                                                         "equalTo":  "1"
+                                                     },
+                                            "size":  {
+                                                         "equalTo":  "50"
+                                                     }
+                                        }
+                },
+    "response":  {
+                     "status":  200,
+                     "bodyFileName":  "transactions-list-large-page1-body.json",
+                     "headers":  {
+                                     "Content-Type":  "application/json"
+                                 }
+                 }
+}

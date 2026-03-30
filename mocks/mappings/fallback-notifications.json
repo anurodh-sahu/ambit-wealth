@@ -1,0 +1,25 @@
+{
+    "priority":  100,
+    "request":  {
+                    "method":  "ANY",
+                    "headers":  {
+                                    "profileType":  {
+                                                        "matches":  ".+"
+                                                    },
+                                    "profileId":  {
+                                                      "matches":  ".+"
+                                                  },
+                                    "clientId":  {
+                                                     "matches":  ".+"
+                                                 }
+                                },
+                    "urlPathPattern":  "/api/v1/notifications.*"
+                },
+    "response":  {
+                     "status":  200,
+                     "bodyFileName":  "generic-success-fallback.json",
+                     "headers":  {
+                                     "Content-Type":  "application/json"
+                                 }
+                 }
+}

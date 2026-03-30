@@ -1,3 +1,4 @@
+"use client";
 import { FilterBreadcrumb } from "@/components/shared/FilterBreadcrumb";
 import { BreadcrumbItem } from "@/components/shared/FilterBreadcrumb";
 import { RefreshCcwIcon } from "lucide-react";

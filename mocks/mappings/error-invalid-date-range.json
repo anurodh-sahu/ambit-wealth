@@ -1,0 +1,33 @@
+{
+    "priority":  2,
+    "request":  {
+                    "method":  "GET",
+                    "headers":  {
+                                    "profileType":  {
+                                                        "matches":  ".+"
+                                                    },
+                                    "profileId":  {
+                                                      "matches":  ".+"
+                                                  },
+                                    "clientId":  {
+                                                     "matches":  ".+"
+                                                 }
+                                },
+                    "queryParameters":  {
+                                            "startDate":  {
+                                                              "equalTo":  "2026-12-31"
+                                                          },
+                                            "endDate":  {
+                                                            "equalTo":  "2026-01-01"
+                                                        }
+                                        },
+                    "urlPathPattern":  "/api/v1/(dashboard/summary|transactions|portfolio/performance|portfolio/benchmark)"
+                },
+    "response":  {
+                     "status":  400,
+                     "bodyFileName":  "error-invalid-date-range-body.json",
+                     "headers":  {
+                                     "Content-Type":  "application/json"
+                                 }
+                 }
+}

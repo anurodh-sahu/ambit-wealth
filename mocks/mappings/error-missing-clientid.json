@@ -1,0 +1,19 @@
+{
+    "priority":  1,
+    "request":  {
+                    "method":  "ANY",
+                    "urlPattern":  "/api/v1/.*",
+                    "headers":  {
+                                    "clientId":  {
+                                                     "absent":  true
+                                                 }
+                                }
+                },
+    "response":  {
+                     "status":  400,
+                     "bodyFileName":  "error-missing-clientid-body.json",
+                     "headers":  {
+                                     "Content-Type":  "application/json"
+                                 }
+                 }
+}
