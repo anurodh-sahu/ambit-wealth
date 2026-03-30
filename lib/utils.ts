@@ -25,3 +25,22 @@ export const formatDate = (date: Date) => {
 export const formatDateWithYear = (date: Date) => {
   return format(date, "dd MMM yyyy");
 };
+
+export const getAssetClassColor = (assetClass: string) => {
+  const styles = getComputedStyle(document.documentElement);
+
+  const map: Record<string, string> = {
+    Cash: styles.getPropertyValue("--chart-1").trim() || "#ef4444",
+    "Fixed Income": styles.getPropertyValue("--chart-2").trim(),
+    Equity: styles.getPropertyValue("--chart-3").trim(),
+    Alternate: styles.getPropertyValue("--chart-4").trim(),
+    Commodities: styles.getPropertyValue("--chart-5").trim(),
+    International: styles.getPropertyValue("--chart-6").trim(),
+  };
+
+  return map[assetClass] || "#f00";
+};
+
+export const roundToTwoDecimals = (value: number) => {
+  return Math.round(value * 100) / 100;
+};

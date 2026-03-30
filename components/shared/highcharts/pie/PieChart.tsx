@@ -21,9 +21,12 @@ export interface PieChartProps {
   tooltipSuffix?: string;
   /** How many legend items before "N more" collapse */
   collapseLegendAfter?: number;
+  /** Optional inner size for donut style e.g. "55%" */
+  innerSize?: string;
+  isLoading?: boolean;
 }
 
-const COLLAPSE_AT = 5;
+const COLLAPSE_AT = 6;
 
 export default function PieChart({
   title,
@@ -32,6 +35,8 @@ export default function PieChart({
   onSelect,
   tooltipSuffix = "%",
   collapseLegendAfter = COLLAPSE_AT,
+  innerSize,
+  isLoading = false,
 }: PieChartProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<Highcharts.Chart | null>(null);
@@ -66,14 +71,13 @@ export default function PieChart({
         borderColor: "#e0e0e0",
         borderWidth: 1,
         style: { color: "#333", fontSize: "12px" },
-        formatter(this: Highcharts.TooltipFormatterContextObject) {
+        formatter(this: any) {
           return `<b>${this.point.name}</b><br/>${this.y}${tooltipSuffix}`;
         },
-        fontFamily: "Jost, Jost Fallback",
       },
       plotOptions: {
         pie: {
-          // innerSize: "55%",
+          innerSize,
           size: "85%",
           center: ["40%", "50%"],
           dataLabels: { enabled: false },
@@ -141,120 +145,128 @@ export default function PieChart({
       >
         {title}
       </p>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "flex-start",
-          flexDirection: "column",
-        }}
-        className="items-center flex-col justify-center w-full"
-      >
-        {/* Donut */}
-        <div
-          ref={containerRef}
-          style={{ width: 130, height: 130, flexShrink: 0 }}
-          className="mx-auto"
-        />
-
-        {/* Legend */}
+      {isLoading ? (
+        <>
+          <div ref={containerRef} style={{ width: 130, height: 130 }} />
+          {/* your existing legend */}
+        </>
+      ) : (
         <div
           style={{
             display: "flex",
+            alignItems: "flex-start",
             flexDirection: "column",
-            gap: 2,
-            fontSize: 11,
-            paddingTop: 4,
           }}
-          className="w-full"
+          className="items-center flex-col justify-center w-full"
         >
-          {visibleItems.map((d) => (
-            <button
-              key={d.name}
-              onClick={() =>
-                onSelect?.(d.name === selectedName ? null : d.name)
-              }
-              title={d.name}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                background: "none",
-                border: "none",
-                cursor: onSelect ? "pointer" : "default",
-                padding: "1px 0",
-                textAlign: "left",
-                width: "100%",
-                opacity: selectedName && selectedName !== d.name ? 0.35 : 1,
-                fontWeight: selectedName === d.name ? 700 : 400,
-                transition: "opacity 0.2s",
-                fontFamily: "Jost, Jost Fallback",
-              }}
-            >
-              <span
+          {/* Donut */}
+          <div
+            ref={containerRef}
+            style={{ width: 130, height: 130, flexShrink: 0 }}
+            className="mx-auto"
+          />
+
+          {/* Legend */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              fontSize: 11,
+              paddingTop: 4,
+            }}
+            className="w-full"
+          >
+            {visibleItems.map((d) => (
+              <button
+                key={d.name}
+                onClick={() =>
+                  onSelect?.(d.name === selectedName ? null : d.name)
+                }
+                title={d.name}
                 style={{
-                  width: 9,
-                  height: 9,
-                  borderRadius: "50%",
-                  background: d.color,
-                  flexShrink: 0,
-                  display: "inline-block",
-                  boxShadow:
-                    selectedName === d.name
-                      ? `0 0 0 2px white, 0 0 0 3.5px ${d.color}`
-                      : "none",
-                }}
-              />
-              <span
-                style={{
-                  color: "#555",
-                  maxWidth: 120,
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  background: "none",
+                  border: "none",
+                  cursor: onSelect ? "pointer" : "default",
+                  padding: "1px 0",
+                  textAlign: "left",
+                  width: "100%",
+                  opacity: selectedName && selectedName !== d.name ? 0.35 : 1,
+                  fontWeight: selectedName === d.name ? 700 : 400,
+                  transition: "opacity 0.2s",
                   fontFamily: "Jost, Jost Fallback",
                 }}
               >
-                {d.name}
-              </span>
-              <span
+                <span
+                  style={{
+                    width: 9,
+                    height: 9,
+                    borderRadius: "50%",
+                    background: d.color,
+                    flexShrink: 0,
+                    display: "inline-block",
+                    boxShadow:
+                      selectedName === d.name
+                        ? `0 0 0 2px white, 0 0 0 3.5px ${d.color}`
+                        : "none",
+                  }}
+                  className={d.color}
+                />
+                <span
+                  style={{
+                    color: "#555",
+                    maxWidth: 120,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    fontFamily: "Jost, Jost Fallback",
+                  }}
+                >
+                  {d.name}
+                </span>
+                <span
+                  style={{
+                    color: "#999",
+                    marginLeft: "auto",
+                    paddingLeft: 8,
+                    flexShrink: 0,
+                    fontFamily: "Jost, Jost Fallback",
+                  }}
+                >
+                  {d.value}
+                  {tooltipSuffix}
+                </span>
+              </button>
+            ))}
+            {hasMore && (
+              <button
+                onClick={() => setShowAll((p) => !p)}
                 style={{
-                  color: "#999",
-                  marginLeft: "auto",
-                  paddingLeft: 8,
-                  flexShrink: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                  marginTop: 2,
+                  padding: "2px 0",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "#c0392b",
+                  fontWeight: 600,
+                  fontSize: 11,
                   fontFamily: "Jost, Jost Fallback",
                 }}
               >
-                {d.value}
-                {tooltipSuffix}
-              </span>
-            </button>
-          ))}
-          {hasMore && (
-            <button
-              onClick={() => setShowAll((p) => !p)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 4,
-                marginTop: 2,
-                padding: "2px 0",
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                color: "#c0392b",
-                fontWeight: 600,
-                fontSize: 11,
-                fontFamily: "Jost, Jost Fallback",
-              }}
-            >
-              {showAll
-                ? "▲ Show less"
-                : `▼ ${data.length - collapseLegendAfter} more`}
-            </button>
-          )}
+                {showAll
+                  ? "▲ Show less"
+                  : `▼ ${data.length - collapseLegendAfter} more`}
+              </button>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

@@ -324,7 +324,7 @@ export const dashboardSummary1m: DashboardSummaryResponse = {
   ],
   investmentSummary: [
     {
-      assetClass: "Equity",
+      assetClass: "Cash",
       netFlow: 420000,
       gainLoss: 760000,
       lastUpdated: "2026-03-24",
@@ -342,7 +342,7 @@ export const dashboardSummary1m: DashboardSummaryResponse = {
       isLoss: false,
     },
     {
-      assetClass: "International",
+      assetClass: "Equity",
       netFlow: 190000,
       gainLoss: 450000,
       lastUpdated: "2026-03-22",
@@ -351,7 +351,7 @@ export const dashboardSummary1m: DashboardSummaryResponse = {
       isLoss: false,
     },
     {
-      assetClass: "Equity",
+      assetClass: "Alternate",
       netFlow: 420000,
       gainLoss: 760000,
       lastUpdated: "2026-03-24",
@@ -360,7 +360,7 @@ export const dashboardSummary1m: DashboardSummaryResponse = {
       isLoss: true,
     },
     {
-      assetClass: "Fixed Income",
+      assetClass: "Commodities",
       netFlow: 310000,
       gainLoss: 430000,
       lastUpdated: "2026-03-23",
@@ -374,7 +374,7 @@ export const dashboardSummary1m: DashboardSummaryResponse = {
       gainLoss: 450000,
       lastUpdated: "2026-03-22",
       changePercent: 3.1,
-      currentValue: 17940000,
+      currentValue: 12099990,
       isLoss: false,
     },
   ],

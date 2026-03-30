@@ -23,6 +23,7 @@ const meta: Meta<typeof PieChart> = {
     onSelect: { action: "sliceSelected" },
     tooltipSuffix: { control: "text" },
     collapseLegendAfter: { control: { type: "number", min: 3, max: 10 } },
+    innerSize: { control: "text" },
   },
   args: {
     title: "Portfolio Allocation",
@@ -316,5 +317,15 @@ export const ThreeItems: Story = {
       { name: "Cash", value: 15, color: "#43a047" },
     ],
     tooltipSuffix: "%",
+  },
+};
+
+export const DonutStyle: Story = {
+  name: "Donut Style",
+  args: {
+    title: "Portfolio Allocation (Donut)",
+    data: allocationData,
+    tooltipSuffix: "%",
+    innerSize: "55%",
   },
 };
