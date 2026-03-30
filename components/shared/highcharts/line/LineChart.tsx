@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Highcharts from "highcharts";
 import { formatMonth } from "@/lib/utils";
+import { getChartColor } from "@/lib/utils";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 export interface ChartDataPoint {
@@ -28,7 +29,8 @@ const DEFAULT_DATA: ChartDataPoint[] = [
   { date: "Jun '25", investedValue: 22.2, marketValue: 23.2 },
   { date: "", investedValue: 22.8, marketValue: 23.8 },
 ];
-
+const chartColor7 = getChartColor("--chart-7");
+const chartColor8 = getChartColor("--chart-8");
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function LineChart({
   data = DEFAULT_DATA,
@@ -137,14 +139,14 @@ export default function LineChart({
           type: "line",
           name: "Invested Value",
           data: data.map((d) => d.investedValue / 1000000),
-          color: "#5b8fc9",
+          color: chartColor7,
           lineWidth: 1.8,
         },
         {
           type: "line",
           name: "Market Value",
           data: data.map((d) => d.marketValue / 1000000),
-          color: "#2eac80",
+          color: chartColor8,
           lineWidth: 2,
         },
       ],
@@ -201,8 +203,8 @@ export default function LineChart({
         {/* Legend */}
         <div style={{ display: "flex", gap: 20 }}>
           {[
-            { color: "#5b8fc9", label: "INVESTED VALUE" },
-            { color: "#2eac80", label: "MARKET VALUE" },
+            { color: chartColor7, label: "INVESTED VALUE" },
+            { color: chartColor8, label: "MARKET VALUE" },
           ].map(({ color, label }) => (
             <div
               key={label}
