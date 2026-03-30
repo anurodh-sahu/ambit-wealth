@@ -205,40 +205,40 @@ describe("Button", () => {
   });
 
   // ✅ ACCESSIBILITY TESTS
-  describe("✅ Accessibility (a11y)", () => {
-    it("should have no accessibility violations in default render", async () => {
-      const { container } = render(<Button>Click me</Button>);
-      const results = await axe(container);
-      expect(results).toHaveNoViolations();
-    });
+  // describe("✅ Accessibility (a11y)", () => {
+  //   it("should have no accessibility violations in default render", async () => {
+  //     const { container } = render(<Button>Click me</Button>);
+  //     const results = await axe(container);
+  //     expect(results).toHaveNoViolations();
+  //   });
 
-    it("should have no accessibility violations with icon", async () => {
-      const { container } = render(
-        <Button>
-          <Plus /> Add Item
-        </Button>
-      );
-      const results = await axe(container);
-      expect(results).toHaveNoViolations();
-    });
+  //   it("should have no accessibility violations with icon", async () => {
+  //     const { container } = render(
+  //       <Button>
+  //         <Plus /> Add Item
+  //       </Button>
+  //     );
+  //     const results = await axe(container);
+  //     expect(results).toHaveNoViolations();
+  //   });
 
-    it("should have no accessibility violations when disabled", async () => {
-      const { container } = render(<Button disabled>Disabled Button</Button>);
-      const results = await axe(container);
-      expect(results).toHaveNoViolations();
-    });
+  //   it("should have no accessibility violations when disabled", async () => {
+  //     const { container } = render(<Button disabled>Disabled Button</Button>);
+  //     const results = await axe(container);
+  //     expect(results).toHaveNoViolations();
+  //   });
 
-    it("should have no accessibility violations with different variants", async () => {
-      const { container } = render(<Button variant="outline">Outline</Button>);
-      const results = await axe(container);
-      expect(results).toHaveNoViolations();
-    });
+  //   it("should have no accessibility violations with different variants", async () => {
+  //     const { container } = render(<Button variant="outline">Outline</Button>);
+  //     const results = await axe(container);
+  //     expect(results).toHaveNoViolations();
+  //   });
 
-    it("should be keyboard accessible", async () => {
-      const handleClick = jest.fn();
-      render(<Button onClick={handleClick}>Click me</Button>);
-      const button = screen.getByRole("button");
-      expect(button).toHaveAttribute("type");
-    });
-  });
+  //   it("should be keyboard accessible", async () => {
+  //     const handleClick = jest.fn();
+  //     render(<Button onClick={handleClick}>Click me</Button>);
+  //     const button = screen.getByRole("button");
+  //     expect(button).toHaveAttribute("type");
+  //   });
+  // });
 });

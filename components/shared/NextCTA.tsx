@@ -38,7 +38,7 @@ export default function NextCTA({
                         <Button
                         variant={btnVarient}
                         shape={btnShape}
-                        onClick={() => onClick}
+                        onClick={onClick}
                         className="uppercase"
                         >
                         {btnTitle}
