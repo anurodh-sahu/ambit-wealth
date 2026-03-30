@@ -11,7 +11,8 @@ import ProgressCardGrid from "@/components/shared/ProgressCardGrid";
 import DateFilterBar from "@/components/shared/DateFilterBar";
 import WelcomeSection from "./WelcomeSection";
 import TitleBar from "@/components/shared/TitleBar";
-
+import LineChart from "@/components/shared/highcharts/line/LineChart";
+import PieChart from "@/components/shared/highcharts/pie/PieChart";
 import ProgressCard from "@/components/shared/ProgressCard";
 import NextCTA from "@/components/shared/NextCTA";
 import { Mail, FileText, Phone, CreditCard, AlertCircle } from "lucide-react";
@@ -23,6 +24,7 @@ export default function Main() {
   const { isLoading, data, error } = useDashboard();
   const [activeProfileTab, setActiveProfileTab] = useState("personal");
   if (error) return <div>Error: {error} </div>;
+  console.log("data --", data?.portfolioMovement);
   return (
     <div className="flex flex-col gap-[123px]">
       <div className="flex flex-col gap-3">
@@ -48,29 +50,10 @@ export default function Main() {
           kpiSkeletonCount={kpiSkeletonCount}
           kpiData={data?.kpiCards ?? []}
         />
-        <ChartWrapper title="Portfolio Movement" isScale={true}>
-          <LineStackChart
-            labels={[
-              "Jan",
-              "Feb",
-              "Mar",
-              "Apr",
-              "May",
-              "Jun",
-              "Jul",
-              "Aug",
-              "Sep",
-              "Oct",
-              "Nov",
-              "Dec",
-            ]}
-            series={[
-              {
-                name: "Series 1",
-                type: "line",
-                data: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120],
-              },
-            ]}
+        <ChartWrapper>
+          <LineChart
+            asOnDate="22 - JAN '26"
+            data={data?.portfolioMovement ?? []}
           />
         </ChartWrapper>
       </div>
@@ -88,28 +71,33 @@ export default function Main() {
               borderRadius="16px"
               isScale={false}
             >
-              <LineStackChart
-                labels={[
-                  "Jan",
-                  "Feb",
-                  "Mar",
-                  "Apr",
-                  "May",
-                  "Jun",
-                  "Jul",
-                  "Aug",
-                  "Sep",
-                  "Oct",
-                  "Nov",
-                  "Dec",
-                ]}
-                series={[
+              <PieChart
+                collapseLegendAfter={5}
+                data={[
                   {
-                    name: "Series 1",
-                    type: "line",
-                    data: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120],
+                    color: "#a89850",
+                    name: "Equity",
+                    value: 40,
+                  },
+                  {
+                    color: "#4a8e6e",
+                    name: "Fixed Income",
+                    value: 30,
+                  },
+                  {
+                    color: "#5a9ba0",
+                    name: "Alternate",
+                    value: 20,
+                  },
+                  {
+                    color: "#2e4e65",
+                    name: "Cash",
+                    value: 10,
                   },
                 ]}
+                onSelect={() => {}}
+                title="Portfolio Allocation"
+                tooltipSuffix="%"
               />
             </ChartWrapper>
           </div>

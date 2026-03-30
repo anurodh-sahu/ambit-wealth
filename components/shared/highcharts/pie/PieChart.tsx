@@ -69,7 +69,7 @@ export default function PieChart({
         formatter(this: Highcharts.TooltipFormatterContextObject) {
           return `<b>${this.point.name}</b><br/>${this.y}${tooltipSuffix}`;
         },
-        fontFamily: "Jost, Jost Fallback"
+        fontFamily: "Jost, Jost Fallback",
       },
       plotOptions: {
         pie: {
@@ -91,15 +91,20 @@ export default function PieChart({
       },
       series: [{ type: "pie", data: buildSeriesData() }],
       credits: { enabled: false },
-      legend: { enabled: false },
+      legend: {},
     });
-    return () => { chartRef.current?.destroy(); chartRef.current = null; };
+    return () => {
+      chartRef.current?.destroy();
+      chartRef.current = null;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Update on data/selection change
   useEffect(() => {
-    chartRef.current?.series[0]?.setData(buildSeriesData(), true, { duration: 250 });
+    chartRef.current?.series[0]?.setData(buildSeriesData(), true, {
+      duration: 250,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, selectedName]);
 
@@ -116,41 +121,112 @@ export default function PieChart({
   }, [data.length, collapseLegendAfter]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", minWidth: 0, fontFamily: "Jost, Jost Fallback" }}>
-      <p style={{ fontSize: 13, fontWeight: 600, color: "#333", margin: "0 0 4px 4px", fontFamily: "Jost, Jost Fallback" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        minWidth: 0,
+        fontFamily: "Jost, Jost Fallback",
+      }}
+      className="items-center justify-center w-full"
+    >
+      <p
+        style={{
+          fontSize: 13,
+          fontWeight: 600,
+          color: "#333",
+          margin: "0 0 4px 4px",
+          fontFamily: "Jost, Jost Fallback",
+        }}
+      >
         {title}
       </p>
-      <div style={{ display: "flex", alignItems: "flex-start" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          flexDirection: "column",
+        }}
+        className="items-center flex-col justify-center w-full"
+      >
         {/* Donut */}
-        <div ref={containerRef} style={{ width: 130, height: 130, flexShrink: 0 }} />
+        <div
+          ref={containerRef}
+          style={{ width: 130, height: 130, flexShrink: 0 }}
+          className="mx-auto"
+        />
 
         {/* Legend */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 2, fontSize: 11, paddingTop: 4 }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            fontSize: 11,
+            paddingTop: 4,
+          }}
+          className="w-full"
+        >
           {visibleItems.map((d) => (
             <button
               key={d.name}
-              onClick={() => onSelect?.(d.name === selectedName ? null : d.name)}
+              onClick={() =>
+                onSelect?.(d.name === selectedName ? null : d.name)
+              }
               title={d.name}
               style={{
-                display: "flex", alignItems: "center", gap: 6,
-                background: "none", border: "none", cursor: onSelect ? "pointer" : "default",
-                padding: "1px 0", textAlign: "left", width: "100%",
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                background: "none",
+                border: "none",
+                cursor: onSelect ? "pointer" : "default",
+                padding: "1px 0",
+                textAlign: "left",
+                width: "100%",
                 opacity: selectedName && selectedName !== d.name ? 0.35 : 1,
                 fontWeight: selectedName === d.name ? 700 : 400,
                 transition: "opacity 0.2s",
-                fontFamily: "Jost, Jost Fallback"
+                fontFamily: "Jost, Jost Fallback",
               }}
             >
-              <span style={{
-                width: 9, height: 9, borderRadius: "50%", background: d.color,
-                flexShrink: 0, display: "inline-block",
-                boxShadow: selectedName === d.name ? `0 0 0 2px white, 0 0 0 3.5px ${d.color}` : "none",
-              }} />
-              <span style={{ color: "#555", maxWidth: 120, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontFamily: "Jost, Jost Fallback" }}>
+              <span
+                style={{
+                  width: 9,
+                  height: 9,
+                  borderRadius: "50%",
+                  background: d.color,
+                  flexShrink: 0,
+                  display: "inline-block",
+                  boxShadow:
+                    selectedName === d.name
+                      ? `0 0 0 2px white, 0 0 0 3.5px ${d.color}`
+                      : "none",
+                }}
+              />
+              <span
+                style={{
+                  color: "#555",
+                  maxWidth: 120,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  fontFamily: "Jost, Jost Fallback",
+                }}
+              >
                 {d.name}
               </span>
-              <span style={{ color: "#999", marginLeft: "auto", paddingLeft: 8, flexShrink: 0, fontFamily: "Jost, Jost Fallback" }}>
-                {d.value}{tooltipSuffix}
+              <span
+                style={{
+                  color: "#999",
+                  marginLeft: "auto",
+                  paddingLeft: 8,
+                  flexShrink: 0,
+                  fontFamily: "Jost, Jost Fallback",
+                }}
+              >
+                {d.value}
+                {tooltipSuffix}
               </span>
             </button>
           ))}
@@ -158,14 +234,23 @@ export default function PieChart({
             <button
               onClick={() => setShowAll((p) => !p)}
               style={{
-                display: "flex", alignItems: "center", gap: 4,
-                marginTop: 2, padding: "2px 0",
-                background: "none", border: "none", cursor: "pointer",
-                color: "#c0392b", fontWeight: 600, fontSize: 11,
+                display: "flex",
+                alignItems: "center",
+                gap: 4,
+                marginTop: 2,
+                padding: "2px 0",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                color: "#c0392b",
+                fontWeight: 600,
+                fontSize: 11,
                 fontFamily: "Jost, Jost Fallback",
               }}
             >
-              {showAll ? "▲ Show less" : `▼ ${data.length - collapseLegendAfter} more`}
+              {showAll
+                ? "▲ Show less"
+                : `▼ ${data.length - collapseLegendAfter} more`}
             </button>
           )}
         </div>

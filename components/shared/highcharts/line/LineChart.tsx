@@ -2,58 +2,31 @@
 
 import { useEffect, useRef } from "react";
 import Highcharts from "highcharts";
+import { formatMonth } from "@/lib/utils";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 export interface ChartDataPoint {
-  month: string;       // Month label e.g. "Apr '25" — use "" for in-between weeks
+  date: string; // Month label e.g. "Apr '25" — use "" for in-between weeks
   investedValue: number;
   marketValue: number;
 }
 
 interface LineChartProps {
   data: ChartDataPoint[];
-  asOnDate?: string;   // e.g. "22 - JAN '26"
+  asOnDate?: string; // e.g. "22 - JAN '26"
 }
 
 // ── Dummy data ────────────────────────────────────────────────────────────────
 const DEFAULT_DATA: ChartDataPoint[] = [
-  { month: "Apr '25",  investedValue: 19.7, marketValue: 20.7 },
-  { month: "",         investedValue: 20.5, marketValue: 21.5 },
-  { month: "",         investedValue: 21.4, marketValue: 22.4 },
-  { month: "",         investedValue: 22.0, marketValue: 23.0 },
-  { month: "May '25",  investedValue: 21.8, marketValue: 22.8 },
-  { month: "",         investedValue: 22.2, marketValue: 23.2 },
-  { month: "",         investedValue: 21.6, marketValue: 22.6 },
-  { month: "",         investedValue: 22.5, marketValue: 23.5 },
-  { month: "Jun '25",  investedValue: 22.2, marketValue: 23.2 },
-  { month: "",         investedValue: 22.8, marketValue: 23.8 },
-  { month: "",         investedValue: 23.0, marketValue: 24.0 },
-  { month: "",         investedValue: 22.6, marketValue: 23.6 },
-  { month: "Jul '25",  investedValue: 25.2, marketValue: 26.2 },
-  { month: "",         investedValue: 22.8, marketValue: 23.8 },
-  { month: "",         investedValue: 22.5, marketValue: 23.5 },
-  { month: "",         investedValue: 22.4, marketValue: 23.4 },
-  { month: "Aug '25",  investedValue: 23.0, marketValue: 24.0 },
-  { month: "",         investedValue: 23.2, marketValue: 24.2 },
-  { month: "",         investedValue: 22.8, marketValue: 23.8 },
-  { month: "",         investedValue: 22.9, marketValue: 23.9 },
-  { month: "Sep '25",  investedValue: 20.8, marketValue: 20.8 },
-  { month: "",         investedValue: 21.2, marketValue: 21.2 },
-  { month: "",         investedValue: 20.6, marketValue: 21.6 },
-  { month: "",         investedValue: 20.9, marketValue: 21.9 },
-  { month: "Oct '25",  investedValue: 21.3, marketValue: 22.3 },
-  { month: "",         investedValue: 24.5, marketValue: 25.5 },
-  { month: "",         investedValue: 23.8, marketValue: 24.8 },
-  { month: "",         investedValue: 23.2, marketValue: 24.2 },
-  { month: "Nov '25",  investedValue: 23.0, marketValue: 24.0 },
-  { month: "",         investedValue: 23.4, marketValue: 24.4 },
-  { month: "",         investedValue: 22.8, marketValue: 23.8 },
-  { month: "",         investedValue: 23.1, marketValue: 24.1 },
-  { month: "Dec '25",  investedValue: 23.2, marketValue: 24.2 },
-  { month: "",         investedValue: 22.9, marketValue: 23.9 },
-  { month: "",         investedValue: 23.1, marketValue: 24.1 },
-  { month: "",         investedValue: 23.0, marketValue: 24.0 },
-  { month: "Jan '26",  investedValue: 23.2, marketValue: 24.2 },
+  { date: "Apr '25", investedValue: 19.7, marketValue: 20.7 },
+  { date: "", investedValue: 20.5, marketValue: 21.5 },
+  { date: "", investedValue: 22.0, marketValue: 23.0 },
+  { date: "May '25", investedValue: 21.8, marketValue: 22.8 },
+  { date: "", investedValue: 22.2, marketValue: 23.2 },
+  { date: "", investedValue: 15.6, marketValue: 14.6 },
+  { date: "", investedValue: 22.5, marketValue: 23.5 },
+  { date: "Jun '25", investedValue: 22.2, marketValue: 23.2 },
+  { date: "", investedValue: 22.8, marketValue: 23.8 },
 ];
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -85,7 +58,13 @@ export default function LineChart({
         borderColor: "#e8e8e8",
         borderWidth: 1,
         borderRadius: 8,
-        shadow: { color: "rgba(0,0,0,0.07)", offsetX: 0, offsetY: 4, opacity: 1, width: 12 },
+        shadow: {
+          color: "rgba(0,0,0,0.07)",
+          offsetX: 0,
+          offsetY: 4,
+          opacity: 1,
+          width: 12,
+        },
         useHTML: true,
         style: { fontFamily: "Jost, Jost Fallback" },
         crosshairs: {
@@ -112,22 +91,26 @@ export default function LineChart({
       },
 
       xAxis: {
-        categories: data.map((d) => d.month),
+        categories: data.map((d) => d.date),
         lineWidth: 0,
         tickWidth: 0,
         gridLineWidth: 0,
         labels: {
-          style: { color: "#bbb", fontSize: "12px", fontFamily: "Jost, Jost Fallback" },
+          style: {
+            color: "#bbb",
+            fontSize: "12px",
+            fontFamily: "Jost, Jost Fallback",
+          },
           formatter(this: Highcharts.AxisLabelsFormatterContextObject) {
             // Only render label when month name is non-empty
-            return this.value !== "" ? String(this.value) : "";
+            return this.value !== "" ? String(formatMonth(this.value)) : "";
           },
         },
       },
 
       yAxis: {
-        min: 20,
-        max: 28,
+        // min: 20, removed this so that it calculates automatically
+        // max: 28,
         tickInterval: 2,
         lineWidth: 0,
         tickWidth: 0,
@@ -153,14 +136,14 @@ export default function LineChart({
         {
           type: "line",
           name: "Invested Value",
-          data: data.map((d) => d.investedValue),
+          data: data.map((d) => d.investedValue / 1000000),
           color: "#5b8fc9",
           lineWidth: 1.8,
         },
         {
           type: "line",
           name: "Market Value",
-          data: data.map((d) => d.marketValue),
+          data: data.map((d) => d.marketValue / 1000000),
           color: "#2eac80",
           lineWidth: 2,
         },
@@ -182,20 +165,35 @@ export default function LineChart({
   }, []);
 
   return (
-    <div
-      style={{
-        borderRadius: 16,
-        border: "1px solid rgba(210,210,205,0.7)",
-        padding: "20px 24px",
-      }}
-    >
+    <div className="w-full p-6 p-6">
       {/* Header row */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: 8,
+        }}
+      >
         <div>
-          <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", color: "#555" }}>
+          <span
+            style={{
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              color: "#555",
+            }}
+          >
             PORTFOLIO MOVEMENT
           </span>
-          <span style={{ fontSize: 11, color: "#bbb", marginLeft: 8, letterSpacing: "0.05em" }}>
+          <span
+            style={{
+              fontSize: 11,
+              color: "#bbb",
+              marginLeft: 8,
+              letterSpacing: "0.05em",
+            }}
+          >
             AS ON {asOnDate}
           </span>
         </div>
@@ -206,17 +204,28 @@ export default function LineChart({
             { color: "#5b8fc9", label: "INVESTED VALUE" },
             { color: "#2eac80", label: "MARKET VALUE" },
           ].map(({ color, label }) => (
-            <div key={label} style={{ display: "flex", alignItems: "center", gap: 7 }}>
+            <div
+              key={label}
+              style={{ display: "flex", alignItems: "center", gap: 7 }}
+            >
               <span
                 style={{
                   display: "inline-block",
-                  width: 14, height: 14,
+                  width: 14,
+                  height: 14,
                   borderRadius: 3,
                   background: color,
                   opacity: 0.85,
                 }}
               />
-              <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", color: "#999" }}>
+              <span
+                style={{
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: "0.1em",
+                  color: "#999",
+                }}
+              >
                 {label}
               </span>
             </div>
