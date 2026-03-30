@@ -1,4 +1,5 @@
 import { ChevronRight } from "lucide-react";
+import { Fragment } from "react/jsx-runtime";
 export type BreadcrumbItem = {
   label: string;
   key?: string;
@@ -17,7 +18,7 @@ export const FilterBreadcrumb = ({ items, label }: Props) => {
       )}
       {items.map((item, index) => {
         return (
-          <>
+          <Fragment key={item.key}>
             {index !== 0 && (
               <span className="text-primary">
                 <ChevronRight className="size-4" />
@@ -31,7 +32,7 @@ export const FilterBreadcrumb = ({ items, label }: Props) => {
 
               <span>{item.label}</span>
             </div>
-          </>
+          </Fragment>
         );
       })}
     </div>

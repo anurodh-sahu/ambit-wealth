@@ -1,0 +1,25 @@
+{
+    "priority":  20,
+    "request":  {
+                    "method":  "GET",
+                    "urlPath":  "/api/v1/notifications/unread",
+                    "headers":  {
+                                    "profileType":  {
+                                                        "matches":  ".+"
+                                                    },
+                                    "profileId":  {
+                                                      "matches":  ".+"
+                                                  },
+                                    "clientId":  {
+                                                     "matches":  ".+"
+                                                 }
+                                }
+                },
+    "response":  {
+                     "status":  200,
+                     "bodyFileName":  "notifications-unread-default-body.json",
+                     "headers":  {
+                                     "Content-Type":  "application/json"
+                                 }
+                 }
+}

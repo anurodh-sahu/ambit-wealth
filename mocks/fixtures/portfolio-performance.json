@@ -1,0 +1,72 @@
+{
+  "kpiCards": {
+    "xirr": 11.82,
+    "netFlow": 8740000,
+    "gainLoss": 22300000
+  },
+  "status": "SUCCESS",
+  "portfolioMovement": [
+    { "date": "2026-02-23", "marketValue": 122163978, "investedValue": 116500000 },
+    { "date": "2026-02-24", "marketValue": 122305751, "investedValue": 116625000 },
+    { "date": "2026-02-25", "marketValue": 122358502, "investedValue": 116750000 },
+    { "date": "2026-02-26", "marketValue": 122624657, "investedValue": 116875000 },
+    { "date": "2026-02-27", "marketValue": 122674331, "investedValue": 117000000 },
+    { "date": "2026-02-28", "marketValue": 122803973, "investedValue": 117125000 },
+    { "date": "2026-03-01", "marketValue": 123069368, "investedValue": 117250000 },
+    { "date": "2026-03-02", "marketValue": 123106520, "investedValue": 117375000 },
+    { "date": "2026-03-03", "marketValue": 123391186, "investedValue": 117500000 },
+    { "date": "2026-03-04", "marketValue": 123543775, "investedValue": 117625000 },
+    { "date": "2026-03-05", "marketValue": 123662662, "investedValue": 117750000 },
+    { "date": "2026-03-06", "marketValue": 123671962, "investedValue": 117875000 },
+    { "date": "2026-03-07", "marketValue": 123949941, "investedValue": 118000000 },
+    { "date": "2026-03-08", "marketValue": 124150158, "investedValue": 118125000 },
+    { "date": "2026-03-09", "marketValue": 124311067, "investedValue": 118250000 },
+    { "date": "2026-03-10", "marketValue": 124371963, "investedValue": 118375000 },
+    { "date": "2026-03-11", "marketValue": 124542073, "investedValue": 118500000 },
+    { "date": "2026-03-12", "marketValue": 124710495, "investedValue": 118625000 },
+    { "date": "2026-03-13", "marketValue": 124790871, "investedValue": 118750000 },
+    { "date": "2026-03-14", "marketValue": 124885356, "investedValue": 118875000 },
+    { "date": "2026-03-15", "marketValue": 125151553, "investedValue": 119000000 },
+    { "date": "2026-03-16", "marketValue": 125241634, "investedValue": 119125000 },
+    { "date": "2026-03-17", "marketValue": 125413249, "investedValue": 119250000 },
+    { "date": "2026-03-18", "marketValue": 125643071, "investedValue": 119375000 },
+    { "date": "2026-03-19", "marketValue": 125811629, "investedValue": 119500000 },
+    { "date": "2026-03-20", "marketValue": 125784664, "investedValue": 119625000 },
+    { "date": "2026-03-21", "marketValue": 126113105, "investedValue": 119750000 },
+    { "date": "2026-03-22", "marketValue": 126161995, "investedValue": 119875000 },
+    { "date": "2026-03-23", "marketValue": 126260087, "investedValue": 120000000 },
+    { "date": "2026-03-24", "marketValue": 126420899, "investedValue": 120125000 }
+  ],
+  "performanceTable": [
+    {
+      "sinceInception": 20160328,
+      "particulars": "From Date",
+      "ytd": 20250401,
+      "qtd": 20260101
+    },
+    {
+      "sinceInception": 8400000,
+      "particulars": "Begin Value",
+      "ytd": 107100000,
+      "qtd": 118200000
+    },
+    {
+      "sinceInception": 106340000,
+      "particulars": "Net Capital",
+      "ytd": 8740000,
+      "qtd": 1210000
+    },
+    {
+      "sinceInception": 22300000,
+      "particulars": "Gain / Loss",
+      "ytd": 22300000,
+      "qtd": 4200000
+    },
+    {
+      "sinceInception": 11.82,
+      "particulars": "XIRR",
+      "ytd": 11.82,
+      "qtd": 9.8
+    }
+  ]
+}

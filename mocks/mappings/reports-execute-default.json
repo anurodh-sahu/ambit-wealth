@@ -1,0 +1,25 @@
+{
+    "priority":  20,
+    "request":  {
+                    "method":  "POST",
+                    "headers":  {
+                                    "profileType":  {
+                                                        "matches":  ".+"
+                                                    },
+                                    "profileId":  {
+                                                      "matches":  ".+"
+                                                  },
+                                    "clientId":  {
+                                                     "matches":  ".+"
+                                                 }
+                                },
+                    "urlPathPattern":  "/api/v1/reports/[A-Za-z0-9\\-]+/execute"
+                },
+    "response":  {
+                     "status":  200,
+                     "bodyFileName":  "reports-execute-default-body.json",
+                     "headers":  {
+                                     "Content-Type":  "application/json"
+                                 }
+                 }
+}

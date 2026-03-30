@@ -1,0 +1,25 @@
+{
+    "priority":  20,
+    "request":  {
+                    "method":  "GET",
+                    "urlPath":  "/api/v1/portfolio/performance",
+                    "headers":  {
+                                    "profileType":  {
+                                                        "matches":  ".+"
+                                                    },
+                                    "profileId":  {
+                                                      "matches":  ".+"
+                                                  },
+                                    "clientId":  {
+                                                     "matches":  ".+"
+                                                 }
+                                }
+                },
+    "response":  {
+                     "status":  200,
+                     "bodyFileName":  "portfolio-performance-default.json",
+                     "headers":  {
+                                     "Content-Type":  "application/json"
+                                 }
+                 }
+}

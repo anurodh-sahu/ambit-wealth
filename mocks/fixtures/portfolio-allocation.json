@@ -1,0 +1,122 @@
+{
+  "allocationHistory": [
+    {
+      "allocations": [
+        { "amount": 52000000, "percentage": 48, "assetClass": "Equity" },
+        { "amount": 34000000, "percentage": 32, "assetClass": "Fixed Income" },
+        { "amount": 21000000, "percentage": 20, "assetClass": "International" }
+      ],
+      "date": "2025-04-01"
+    },
+    {
+      "allocations": [
+        { "amount": 53300000, "percentage": 48.2, "assetClass": "Equity" },
+        { "amount": 34700000, "percentage": 31.9, "assetClass": "Fixed Income" },
+        { "amount": 21500000, "percentage": 19.9, "assetClass": "International" }
+      ],
+      "date": "2025-05-01"
+    },
+    {
+      "allocations": [
+        { "amount": 54600000, "percentage": 48.4, "assetClass": "Equity" },
+        { "amount": 35400000, "percentage": 31.8, "assetClass": "Fixed Income" },
+        { "amount": 22000000, "percentage": 19.8, "assetClass": "International" }
+      ],
+      "date": "2025-06-01"
+    },
+    {
+      "allocations": [
+        { "amount": 55900000, "percentage": 48.6, "assetClass": "Equity" },
+        { "amount": 36100000, "percentage": 31.7, "assetClass": "Fixed Income" },
+        { "amount": 22500000, "percentage": 19.7, "assetClass": "International" }
+      ],
+      "date": "2025-07-01"
+    },
+    {
+      "allocations": [
+        { "amount": 57200000, "percentage": 48.8, "assetClass": "Equity" },
+        { "amount": 36800000, "percentage": 31.6, "assetClass": "Fixed Income" },
+        { "amount": 23000000, "percentage": 19.6, "assetClass": "International" }
+      ],
+      "date": "2025-08-01"
+    },
+    {
+      "allocations": [
+        { "amount": 58500000, "percentage": 49, "assetClass": "Equity" },
+        { "amount": 37500000, "percentage": 31.5, "assetClass": "Fixed Income" },
+        { "amount": 23500000, "percentage": 19.5, "assetClass": "International" }
+      ],
+      "date": "2025-09-01"
+    },
+    {
+      "allocations": [
+        { "amount": 59800000, "percentage": 49.2, "assetClass": "Equity" },
+        { "amount": 38200000, "percentage": 31.4, "assetClass": "Fixed Income" },
+        { "amount": 24000000, "percentage": 19.4, "assetClass": "International" }
+      ],
+      "date": "2025-10-01"
+    },
+    {
+      "allocations": [
+        { "amount": 61100000, "percentage": 49.4, "assetClass": "Equity" },
+        { "amount": 38900000, "percentage": 31.3, "assetClass": "Fixed Income" },
+        { "amount": 24500000, "percentage": 19.3, "assetClass": "International" }
+      ],
+      "date": "2025-11-01"
+    },
+    {
+      "allocations": [
+        { "amount": 62400000, "percentage": 49.6, "assetClass": "Equity" },
+        { "amount": 39600000, "percentage": 31.2, "assetClass": "Fixed Income" },
+        { "amount": 25000000, "percentage": 19.2, "assetClass": "International" }
+      ],
+      "date": "2025-12-01"
+    },
+    {
+      "allocations": [
+        { "amount": 63700000, "percentage": 49.8, "assetClass": "Equity" },
+        { "amount": 40300000, "percentage": 31.1, "assetClass": "Fixed Income" },
+        { "amount": 25500000, "percentage": 19.1, "assetClass": "International" }
+      ],
+      "date": "2026-01-01"
+    },
+    {
+      "allocations": [
+        { "amount": 65000000, "percentage": 50, "assetClass": "Equity" },
+        { "amount": 41000000, "percentage": 31, "assetClass": "Fixed Income" },
+        { "amount": 26000000, "percentage": 19, "assetClass": "International" }
+      ],
+      "date": "2026-02-01"
+    },
+    {
+      "allocations": [
+        { "amount": 66300000, "percentage": 50.2, "assetClass": "Equity" },
+        { "amount": 41700000, "percentage": 30.9, "assetClass": "Fixed Income" },
+        { "amount": 26500000, "percentage": 18.9, "assetClass": "International" }
+      ],
+      "date": "2026-03-01"
+    }
+  ],
+  "status": "SUCCESS",
+  "asOnDate": "2026-03-24",
+  "table": [
+    {
+      "assetClass": "Equity",
+      "beginValue": 52000000,
+      "endValue": 66200000,
+      "irr": 13.2
+    },
+    {
+      "assetClass": "Fixed Income",
+      "beginValue": 34000000,
+      "endValue": 41700000,
+      "irr": 8.1
+    },
+    {
+      "assetClass": "International",
+      "beginValue": 21000000,
+      "endValue": 25740000,
+      "irr": 12.4
+    }
+  ]
+}

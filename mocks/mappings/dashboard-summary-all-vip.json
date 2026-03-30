@@ -1,0 +1,30 @@
+{
+    "priority":  4,
+    "request":  {
+                    "method":  "GET",
+                    "urlPath":  "/api/v1/dashboard/summary",
+                    "headers":  {
+                                    "profileType":  {
+                                                        "matches":  ".+"
+                                                    },
+                                    "profileId":  {
+                                                      "matches":  ".+"
+                                                  },
+                                    "clientId":  {
+                                                     "matches":  "VIP.*"
+                                                 }
+                                },
+                    "queryParameters":  {
+                                            "timeFilter":  {
+                                                               "equalTo":  "ALL"
+                                                           }
+                                        }
+                },
+    "response":  {
+                     "status":  200,
+                     "bodyFileName":  "dashboard-all-vip.json",
+                     "headers":  {
+                                     "Content-Type":  "application/json"
+                                 }
+                 }
+}

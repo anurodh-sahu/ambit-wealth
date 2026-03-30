@@ -11,20 +11,27 @@ export default function DateFilterBar({
   filterValue: string;
   asOnDate: Date;
 }) {
+  const formatDate = (d: Date) =>
+    new Intl.DateTimeFormat("en-GB", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      timeZone: "UTC",
+    }).format(d);
   return (
     <div className="flex justify-between items-center text-sm ">
       {isDashboard ? (
         <div className="flex items-center justify-center gap-2 uppercase text-center text-header font-sans text-lg  leading-7 tracking-normal">
           <span className="font-semibold">{filterLabel}</span>{" "}
           <span className="font-normal">
-            As On {asOnDate.toLocaleDateString()}
+            As On {formatDate(asOnDate)}
           </span>
         </div>
       ) : (
         <div className="flex items-center justify-center gap-2 uppercase text-center text-header font-sans text-lg  leading-7 tracking-normal">
           <span className="font-semibold">{filterLabel}</span>{" "}
           <span className="font-normal">
-            as on 22 - {asOnDate.toLocaleDateString()}
+            as on 22 - {formatDate(asOnDate)}
           </span>
         </div>
       )}

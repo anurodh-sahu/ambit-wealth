@@ -1,0 +1,47 @@
+{
+  "treeData": [
+    {
+      "assetClass": "Equity",
+      "categories": [
+        {
+          "category": "Large Cap",
+          "schemes": [
+            { "schemeName": "HDFC Top 100", "value": 18400000 },
+            { "schemeName": "ICICI Bluechip", "value": 13700000 }
+          ]
+        },
+        {
+          "category": "Mid Cap",
+          "schemes": [
+            { "schemeName": "Kotak Emerging Equity", "value": 9100000 }
+          ]
+        }
+      ]
+    },
+    {
+      "assetClass": "Fixed Income",
+      "categories": [
+        {
+          "category": "Corporate Bond",
+          "schemes": [{ "schemeName": "Axis Corporate Bond", "value": 8200000 }]
+        },
+        {
+          "category": "Liquid",
+          "schemes": [{ "schemeName": "SBI Liquid", "value": 6300000 }]
+        }
+      ]
+    },
+    {
+      "assetClass": "International",
+      "categories": [
+        {
+          "category": "US Equity",
+          "schemes": [
+            { "schemeName": "Motilal Oswal Nasdaq 100", "value": 7200000 }
+          ]
+        }
+      ]
+    }
+  ],
+  "status": "SUCCESS"
+}

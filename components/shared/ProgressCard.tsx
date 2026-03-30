@@ -6,10 +6,13 @@ export type ProgressCardProps =
   | { loading: true; isLoss?: boolean }
   | {
       loading?: false;
-      label: string;
-      value: number;
+      assetClass: string;
+      currentValue: number;
       progress: number;
       isLoss?: boolean;
+      gainLoss: number;
+      netFlow: number;
+      changePercent: number;
     };
 
 export default function ProgressCard(props: ProgressCardProps) {
@@ -52,7 +55,15 @@ export default function ProgressCard(props: ProgressCardProps) {
     );
   }
 
-  const { label, value, progress, isLoss = true } = props;
+  const {
+    assetClass,
+    currentValue,
+    progress,
+    gainLoss,
+    netFlow,
+    changePercent,
+    isLoss = true,
+  } = props;
   return (
     <div className="flex flex-col relative p-5 rounded-[28px] overflow-hidden">
       <Image
@@ -66,17 +77,17 @@ export default function ProgressCard(props: ProgressCardProps) {
       <div className="relative z-10 flex flex-col gap-[5px]">
         <div className="flex flex-col items-start justify-between">
           <span className="font-sans text-xs font-normal leading-4 tracking-normal text-foreground">
-            {label}
+            {assetClass}
           </span>
           <span className="text-black text-2xl font-normal leading-8 tracking-normal">
-            {formatMoneyCr(value)}
+            {formatMoneyCr(currentValue)}
           </span>
         </div>
 
         <div className={cn("relative w-full", !isLoss && "px-1")}>
           {/* Root */}
           <ProgressPrimitive.Root
-            value={progress}
+            value={changePercent}
             max={100}
             aria-label="Portfolio progress"
             className={cn(
@@ -97,7 +108,7 @@ export default function ProgressCard(props: ProgressCardProps) {
                 "h-full rounded-full transition-all duration-500 ease-out",
                 isLoss ? "bg-red-500" : "bg-white"
               )}
-              style={{ width: `${progress}%` }}
+              style={{ width: `${changePercent}%` }}
             />
           </div>
         </div>
@@ -106,7 +117,7 @@ export default function ProgressCard(props: ProgressCardProps) {
             Net Flow
           </span>
           <span className="text-secondary-s text-xs font-normal leading-4 tracking-normal">
-            {formatMoneyCr(value)}
+            {formatMoneyCr(netFlow)}
           </span>
         </div>
         <div className="flex items-center justify-between">
@@ -114,7 +125,7 @@ export default function ProgressCard(props: ProgressCardProps) {
             Gains/Loss
           </span>
           <span className="text-accents-green text-xs font-normal leading-4 tracking-normal">
-            {formatMoneyCr(value)} ({progress}%)
+            {formatMoneyCr(gainLoss)} ({changePercent}%)
           </span>
         </div>
       </div>

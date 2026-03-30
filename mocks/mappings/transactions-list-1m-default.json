@@ -1,0 +1,30 @@
+{
+    "priority":  20,
+    "request":  {
+                    "method":  "GET",
+                    "urlPath":  "/api/v1/transactions",
+                    "headers":  {
+                                    "profileType":  {
+                                                        "matches":  ".+"
+                                                    },
+                                    "profileId":  {
+                                                      "matches":  ".+"
+                                                  },
+                                    "clientId":  {
+                                                     "matches":  ".+"
+                                                 }
+                                },
+                    "queryParameters":  {
+                                            "timeFilter":  {
+                                                               "equalTo":  "1M"
+                                                           }
+                                        }
+                },
+    "response":  {
+                     "status":  200,
+                     "bodyFileName":  "transactions-list-1m-default-body.json",
+                     "headers":  {
+                                     "Content-Type":  "application/json"
+                                 }
+                 }
+}

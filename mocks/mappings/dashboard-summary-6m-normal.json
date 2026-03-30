@@ -1,0 +1,30 @@
+{
+    "priority":  5,
+    "request":  {
+                    "method":  "GET",
+                    "urlPath":  "/api/v1/dashboard/summary",
+                    "headers":  {
+                                    "profileType":  {
+                                                        "matches":  ".+"
+                                                    },
+                                    "profileId":  {
+                                                      "matches":  ".+"
+                                                  },
+                                    "clientId":  {
+                                                     "matches":  ".+"
+                                                 }
+                                },
+                    "queryParameters":  {
+                                            "timeFilter":  {
+                                                               "equalTo":  "6M"
+                                                           }
+                                        }
+                },
+    "response":  {
+                     "status":  200,
+                     "bodyFileName":  "dashboard-6m-normal.json",
+                     "headers":  {
+                                     "Content-Type":  "application/json"
+                                 }
+                 }
+}
