@@ -44,3 +44,6 @@ export const getAssetClassColor = (assetClass: string) => {
 export const roundToTwoDecimals = (value: number) => {
   return Math.round(value * 100) / 100;
 };
+
+export const getChartColor = (varName: string) =>
+  getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
