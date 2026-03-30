@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Jost, Inter, Geist_Mono } from "next/font/google";
 import ReduxProvider from "@/store/ReduxProvider";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import HighchartsInit from "@/components/HighchartsInit";
 import Providers from "@/app/provider";
 import "./globals.css";
 
@@ -36,6 +37,7 @@ export default function RootLayout({
       className={`${jost.variable} ${inter.variable} ${geistMono.variable}`}
     >
       <body className="antialiased">
+        <HighchartsInit />
         <Providers>
           <TooltipProvider>
             <ReduxProvider>{children}</ReduxProvider>

@@ -1,19 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import ProgressCard from "@/components/shared/ProgressCard";
+import { CardProgressBar, CardProgressBarSkeleton } from "@/components/shared/CardProgressBar";
 
-const meta: Meta<typeof ProgressCard> = {
-  title: "Shared/ProgressCard",
-  component: ProgressCard,
+const meta: Meta<typeof CardProgressBar> = {
+  title: "Shared/CardProgressBar",
+  component: CardProgressBar,
   tags: ["autodocs"],
-  decorators: [
-    (Story) => (
-      <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
-        <div style={{ width: "100%", maxWidth: "420px" }}>
-          <Story />
-        </div>
-      </div>
-    ),
-  ],
   parameters: {
     backgrounds: {
       default: "light",
@@ -25,16 +16,14 @@ const meta: Meta<typeof ProgressCard> = {
     layout: "padded",
   },
   argTypes: {
-    label: { control: "text" },
-    value: { control: { type: "number", min: 0, max: 500000000, step: 1000000 } },
     progress: { control: { type: "number", min: 0, max: 100, step: 1 } },
     isLoss: { control: "boolean" },
+    loading: { control: "boolean" },
   },
   args: {
-    label: "Current Value",
-    value: 240000000,
-    progress: 80,
+    progress: 65,
     isLoss: true,
+    loading: false,
   },
 };
 
@@ -42,15 +31,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 1. Default — Loss scenario with high progress
+// 1. Default — Loss scenario with mid-range progress
 // ─────────────────────────────────────────────────────────────────────────────
 export const Default: Story = {
-  name: "Default (Loss - High Progress)",
+  name: "Default (Loss - 65%)",
   args: {
-    label: "Current Value",
-    value: 240000000,
-    progress: 80,
+    progress: 65,
     isLoss: true,
+    loading: false,
   },
 };
 
@@ -58,64 +46,59 @@ export const Default: Story = {
 // 2. Gain scenario — positive growth condition
 // ─────────────────────────────────────────────────────────────────────────────
 export const Gain: Story = {
-  name: "Gain Scenario",
+  name: "Gain Scenario (85%)",
   args: {
-    label: "Current Value",
-    value: 240000000,
-    progress: 80,
+    progress: 85,
     isLoss: false,
+    loading: false,
   },
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 3. Invested Amount
+// 3. Low progress with loss
 // ─────────────────────────────────────────────────────────────────────────────
-export const InvestedAmount: Story = {
-  name: "Invested Amount",
+export const LowProgressLoss: Story = {
+  name: "Low Progress - Loss (25%)",
   args: {
-    label: "Invested Amount",
-    value: 185000000,
-    progress: 70,
-    isLoss: true,
-  },
-};
-
-// ─────────────────────────────────────────────────────────────────────────────
-// 4. Total Gains
-// ─────────────────────────────────────────────────────────────────────────────
-export const TotalGains: Story = {
-  name: "Total Gains",
-  args: {
-    label: "Total Gains",
-    value: 62700000,
-    progress: 100,
-    isLoss: false,
-  },
-};
-
-// ─────────────────────────────────────────────────────────────────────────────
-// 5. Low progress value
-// ─────────────────────────────────────────────────────────────────────────────
-export const LowProgress: Story = {
-  name: "Low Progress",
-  args: {
-    label: "Portfolio Growth",
-    value: 50000000,
     progress: 25,
     isLoss: true,
+    loading: false,
   },
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 6. Very high progress
+// 4. Low progress with gain
 // ─────────────────────────────────────────────────────────────────────────────
-export const VeryHighProgress: Story = {
-  name: "Very High Progress",
+export const LowProgressGain: Story = {
+  name: "Low Progress - Gain (25%)",
   args: {
-    label: "Returns",
-    value: 300000000,
+    progress: 25,
+    isLoss: false,
+    loading: false,
+  },
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 5. High progress with loss
+// ─────────────────────────────────────────────────────────────────────────────
+export const HighProgressLoss: Story = {
+  name: "High Progress - Loss (90%)",
+  args: {
+    progress: 90,
+    isLoss: true,
+    loading: false,
+  },
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 6. High progress with gain
+// ─────────────────────────────────────────────────────────────────────────────
+export const HighProgressGain: Story = {
+  name: "High Progress - Gain (95%)",
+  args: {
     progress: 95,
     isLoss: false,
+    loading: false,
   },
 };
 
@@ -123,38 +106,35 @@ export const VeryHighProgress: Story = {
 // 7. Minimal progress
 // ─────────────────────────────────────────────────────────────────────────────
 export const MinimalProgress: Story = {
-  name: "Minimal Progress",
+  name: "Minimal Progress (5%)",
   args: {
-    label: "Monthly Returns",
-    value: 10000000,
     progress: 5,
     isLoss: true,
+    loading: false,
   },
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 8. Large value display
+// 8. Maximum progress
 // ─────────────────────────────────────────────────────────────────────────────
-export const LargeValue: Story = {
-  name: "Large Value",
+export const MaximumProgress: Story = {
+  name: "Maximum Progress (100%)",
   args: {
-    label: "Total Portfolio",
-    value: 500000000,
-    progress: 85,
+    progress: 100,
     isLoss: false,
+    loading: false,
   },
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 9. Small value display
+// 9. Zero progress
 // ─────────────────────────────────────────────────────────────────────────────
-export const SmallValue: Story = {
-  name: "Small Value",
+export const ZeroProgress: Story = {
+  name: "Zero Progress (0%)",
   args: {
-    label: "Quick Gains",
-    value: 5000000,
-    progress: 40,
-    isLoss: false,
+    progress: 0,
+    isLoss: true,
+    loading: false,
   },
 };
 
@@ -162,12 +142,11 @@ export const SmallValue: Story = {
 // 10. Mid-range progress with loss
 // ─────────────────────────────────────────────────────────────────────────────
 export const MidProgressLoss: Story = {
-  name: "Mid-range Progress (Loss)",
+  name: "Mid-range Progress - Loss (50%)",
   args: {
-    label: "Net Flow",
-    value: 120000000,
     progress: 50,
     isLoss: true,
+    loading: false,
   },
 };
 
@@ -175,24 +154,36 @@ export const MidProgressLoss: Story = {
 // 11. Mid-range progress with gain
 // ─────────────────────────────────────────────────────────────────────────────
 export const MidProgressGain: Story = {
-  name: "Mid-range Progress (Gain)",
+  name: "Mid-range Progress - Gain (50%)",
   args: {
-    label: "Net Flow",
-    value: 120000000,
     progress: 50,
     isLoss: false,
+    loading: false,
   },
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 12. One Year Returns
+// 12. Loading state — Loss skeleton
 // ─────────────────────────────────────────────────────────────────────────────
-export const OneYearReturns: Story = {
-  name: "1Y Returns",
+export const LoadingLoss: Story = {
+  name: "Loading State - Loss",
   args: {
-    label: "1Y Returns",
-    value: 35000000,
-    progress: 60,
-    isLoss: false,
+    progress: 0,
+    isLoss: true,
+    loading: true,
   },
+  render: (args) => <CardProgressBarSkeleton isLoss={args.isLoss} />,
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 13. Loading state — Gain skeleton
+// ─────────────────────────────────────────────────────────────────────────────
+export const LoadingGain: Story = {
+  name: "Loading State - Gain",
+  args: {
+    progress: 0,
+    isLoss: false,
+    loading: true,
+  },
+  render: (args) => <CardProgressBarSkeleton isLoss={args.isLoss} />,
 };

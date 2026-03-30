@@ -2,7 +2,7 @@
 // import { BreadcrumbItem } from "@/components/shared/FilterBreadcrumb";
 import Image from "next/image";
 import { RefreshCcwIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 
 export default function NextCTA({
   title,
@@ -38,7 +38,7 @@ export default function NextCTA({
                         <Button
                         variant={btnVarient}
                         shape={btnShape}
-                        onClick={() => onClick}
+                        onClick={onClick}
                         className="uppercase"
                         >
                         {btnTitle}
